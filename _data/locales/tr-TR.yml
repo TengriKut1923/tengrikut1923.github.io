@@ -61,11 +61,15 @@ post:
     unit: dakikada
     prompt: okunabilir
   relate_posts: Benzer Gönderiler
+  share: Paylaş
   button:
     next: İleri
     previous: Geri
     copy_code:
       succeed: Kopyalandı.
+    share_link:
+      title: Linki kopyala
+      succeed: Link kopyalandı.
 
 # categories page
 categories:
