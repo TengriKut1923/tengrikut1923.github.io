@@ -19,4 +19,6 @@ package-lock.json
 .vscode
 
 # Misc
-assets/js/dist
+
+# Mac Files
+.DS_Store
