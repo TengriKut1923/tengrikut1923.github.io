@@ -1,11 +1,9 @@
 ---
 title: Getting Started
-author: cotes
-date: 2024-01-01 20:55:00 +0800
+date: 01-01-2024 20:55:00 +0800
 categories: [Blogging, Tutorial]
-tags: [getting started]
+tags: [xxx]
 pin: true
-img_path: '/posts/20180809'
 ---
 
 ## Prerequisites
