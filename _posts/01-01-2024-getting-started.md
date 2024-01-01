@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-date: 01-01-2024 20:55:00 +0800
+date: 01-01-2024 15:00:00 +0800
 categories: [Blogging, Tutorial]
 tags: [xxx]
 pin: true
