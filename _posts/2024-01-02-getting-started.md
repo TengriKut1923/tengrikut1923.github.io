@@ -1,9 +1,6 @@
 ---
 title: Getting Started
 date: 2024-01-01 00:00:00 +0800
-categories: [Blogging, Tutorial]
-tags: [getting started]
-pin: true
 ---
 
 ## Prerequisites
