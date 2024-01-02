@@ -12,8 +12,8 @@ tabs:
   # format: <filename_without_extension>: <value>
   home: Ana Bet
   categories: Ulamlar
-  tags: Etiketler
-  archives: Belgelik
+  tags: İLİŞTİRİLER
+  archives: BELGELİK
   about: Hakkında
 
 # the text displayed in the search bar & search results
@@ -58,5 +58,5 @@ post:
 
 # categories page
 categories:
-  category_measure: kategori
+  category_measure: ulam
   post_measure: gönderi
