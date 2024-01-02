@@ -78,9 +78,9 @@ comments:
   # Giscus options › https://giscus.app
   giscus:
     repo: tengrikut1923/tengrikut1923.github.io
-    repo_id:
+    repo_id: 737562869
     category:
-    category_id:
+    category_id: R_kgDOK_ZQ9Q
     mapping: # optional, default to 'pathname'
     input_position: # optional, default to 'bottom'
     lang: # optional, default to the value of `site.lang`
