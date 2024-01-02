@@ -4,40 +4,34 @@
 
 layout:
   post: Gönderi
-  category: Kategori
-  tag: Etiket
+  category: Ulam
+  tag: İliştiri
 
 # The tabs of sidebar
 tabs:
   # format: <filename_without_extension>: <value>
   home: Ana Bet
-  categories: Kategoriler
+  categories: Ulamlar
   tags: Etiketler
-  archives: Arşiv
+  archives: Belgelik
   about: Hakkında
 
 # the text displayed in the search bar & search results
 search:
   hint: Ara...
-  cancel: İptal
-  no_results: Hop! Öyle bir şey bulamadım.
+  cancel: Boz
+  no_results: Sonuç bulunamadı.
 
 panel:
   lastmod: Son Güncellenenler
-  trending_tags: Yükselen Etiketler
+  trending_tags: Yükselen İliştiriler
   toc: İçindekiler
 
-  # Displayed in the footer
-  brief: Bazı hakları saklıdır.
-  verbose: >-
-    Aksi belirtilmediği sürece, bu sitedeki gönderiler Creative Commons Atıf 4.0 Uluslararası (CC BY 4.0) Lisansı altındadır.
-    Kısaca sayfa linkini vererek değiştirebilir / paylaşabilirsiniz.
-
 not_found:
-  statment: Üzgünüz, bu linki yanlış yerleştirdik veya var olmayan bir şeye işaret ediyor.
+  statment: Bağlantı bulunamadı.
 
 notification:
-  update_found: İçeriğin yeni bir sürümü mevcut.
+  update_found: İçeriğin yeni bir sürümü var.
   update: Güncelle
 
 # ----- Posts related labels -----
@@ -52,15 +46,15 @@ post:
     unit: dakikada
     prompt: okunabilir
   relate_posts: Benzer Gönderiler
-  share: Paylaş
+  share: Üleş
   button:
     next: İleri
     previous: Geri
     copy_code:
-      succeed: Kopyalandı.
+      succeed: Eşlemlendi.
     share_link:
-      title: Linki kopyala
-      succeed: Link kopyalandı.
+      title: Bağlantıyı eşlemle.
+      succeed: Bağlantı eşlemlendi.
 
 # categories page
 categories:
