@@ -1,12 +1,12 @@
 #  The contact options.
 
-- type: reddit
-  icon: "fa-brands fa-reddit-alien"
-  url: 'https://www.reddit.com/r/tengrikut1923'
-
 - type: twitter
   icon: "fa-brands fa-x-twitter"
   url: 'https://twitter.com/tengrikut1923'
+
+- type: reddit
+  icon: "fa-brands fa-reddit-alien"
+  url: 'https://www.reddit.com/r/tengrikut1923'
 
 - type: youtube
   icon: 'fab fa-youtube'
