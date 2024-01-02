@@ -1,7 +1,7 @@
 #  The contact options.
 
 - type: twitter
-  icon: "fa-brands fa-x-twitter"
+  icon: "fa-brands fa-twitter"
   url: 'https://twitter.com/tengrikut1923'
 
 - type: reddit
