@@ -27,10 +27,6 @@ panel:
   trending_tags: Yükselen Etiketler
   toc: İçindekiler
 
-copyright:
-    name: :𐰢𐰤𐰏𐰇:𐱅𐰭𐰼𐰃𐰤𐰤:𐰏𐰇𐰲𐰘𐰠𐰀:𐰾𐰚𐰓𐰤:𐰋𐰃𐰼𐰃:𐰤𐰘𐰾𐰚:𐰽𐰆𐰭𐰽𐰔𐰀:𐰓𐰚:𐰆𐰖𐰔
-    link: https://www.tengrikut1923.com/
-
   # Displayed in the footer
   brief: Bazı hakları saklıdır.
   verbose: >-
@@ -39,10 +35,6 @@ copyright:
 
 not_found:
   statment: Üzgünüz, bu linki yanlış yerleştirdik veya var olmayan bir şeye işaret ediyor.
-
-notification:
-  update_found: İçeriğin yeni bir sürümü mevcut.
-  update: Güncelle
 
 # ----- Posts related labels -----
 
