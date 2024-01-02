@@ -1,9 +1,5 @@
 #  The contact options.
 
-- type: discord
-  icon: "fa-brands fa-discord"
-  url: 'https://discord.com/invite/5Ju4QGU9tR'
-
 - type: reddit
   icon: "fa-brands fa-reddit-alien"
   url: 'https://www.reddit.com/r/tengrikut1923'
@@ -15,6 +11,10 @@
 - type: youtube
   icon: 'fab fa-youtube'
   url: 'https://youtube.com/tengrikut1923'
+
+- type: discord
+  icon: "fa-brands fa-discord"
+  url: 'https://discord.com/invite/5Ju4QGU9tR'
 
 - type: link
   icon: 'fa-solid fa-link'
