@@ -68,7 +68,6 @@ toc: true
 
 comments:
   active: 'giscus'
-  giscus:
     repo: tengrikut1923/tengrikut1923.github.io
     repo_id: 737562869
     category:
