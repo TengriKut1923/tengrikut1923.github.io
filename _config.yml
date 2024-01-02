@@ -14,16 +14,11 @@ tagline: Mengü Tengri'nin gücüyle...
 
 description: Eskiden beri neysek sonsuza kadar oyuz!
   
-# fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: "https://tengrikut1923.github.io"
 
 social:
-  # Change to your full name.
-  # It will be displayed as the default author of the posts and the copyright owner in the Footer
   name: 𐱅𐰭𐰼𐰃:𐰸𐰆𐱃:𝟏𝟗𝟐𝟑
-  links:
-    # The first element serves as the copyright owner's link
-    - https://www.tengrikut1923.com/
+  links: https://www.tengrikut1923.com
 
 google_site_verification: # fill in to your verification string
 
