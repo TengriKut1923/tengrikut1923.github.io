@@ -24,17 +24,10 @@ description: >- # used by seo meta and the atom feed
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: "https://tengrikut1923.github.io"
 
-github:
-  username: tengrikut1923
-
-twitter:
-  username: tengrikut1923
-
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
   name: 𐱅𐰭𐰼𐰃:𐰸𐰆𐱃:𝟏𝟗𝟐𝟑
-  #email: tengrikut1923@gmail.com
   links:
     # The first element serves as the copyright owner's link
     - https://www.tengrikut1923.com/
