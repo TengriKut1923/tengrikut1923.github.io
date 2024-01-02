@@ -34,7 +34,7 @@ social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
   name: 𐱅𐰭𐰼𐰃:𐰸𐰆𐱃:𝟏𝟗𝟐𝟑
-  #email: xx@gmail.com
+  #email: tengrikut1923@gmail.com
   links:
     # The first element serves as the copyright owner's link
     - https://www.tengrikut1923.com/
@@ -45,7 +45,7 @@ google_site_verification: # fill in to your verification string
 # The end of `jekyll-seo-tag` settings
 
 google_analytics:
-  id: G-NB5L9TXBRC # fill in your Google Analytics ID
+  id: G-EMGQV4HZ5N
 
 # Prefer color scheme setting.
 #
