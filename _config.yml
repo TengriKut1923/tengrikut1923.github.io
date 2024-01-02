@@ -73,7 +73,7 @@ comments:
     shortname: 𐱅𐰭𐰼𐰃:𐰸𐰆𐱃:𝟏𝟗𝟐𝟑
   # utterances settings › https://utteranc.es/
   utterances:
-    repo: # <gh-username>/<repo>
+    repo: tengrikut1923/tengrikut1923.github.io
     issue_term: # < url | pathname | title | ...>
   # Giscus options › https://giscus.app
   giscus:
