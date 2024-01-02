@@ -27,6 +27,13 @@ panel:
   trending_tags: Yükselen Etiketler
   toc: İçindekiler
 
+copyright:
+  # Shown at the bottom of the post
+  license:
+    template: Bu gönderi :LICENSE_NAME lisansı altındadır.
+    name: :𐰢𐰤𐰏𐰇:𐱅𐰭𐰼𐰃𐰤𐰤:𐰏𐰇𐰲𐰘𐰠𐰀:𐰾𐰚𐰓𐰤:𐰋𐰃𐰼𐰃:𐰤𐰘𐰾𐰚:𐰽𐰆𐰭𐰽𐰔𐰀:𐰓𐰚:𐰆𐰖𐰔
+    link: https://creativecommons.org/licenses/by/4.0/deed.tr
+
   # Displayed in the footer
   brief: Bazı hakları saklıdır.
   verbose: >-
