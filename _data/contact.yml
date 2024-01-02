@@ -2,6 +2,11 @@
 
 - type: discord
   icon: "fa-brands fa-discord"
+  url: 'https://discord.com/invite/5Ju4QGU9tR'
 
 - type: twitter
   icon: "fa-brands fa-x-twitter"
+
+- type: youtube
+  icon: 'fab fa-youtube'
+  url: 'https://youtube.com/tengrikut1923'
