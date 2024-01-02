@@ -10,11 +10,11 @@ layout:
 # The tabs of sidebar
 tabs:
   # format: <filename_without_extension>: <value>
-  home: Ana Bet
-  categories: Ulamlar
+  home: ANA BET
+  categories: ULAMLAR
   tags: İLİŞTİRİLER
   archives: BELGELİK
-  about: Hakkında
+  about: ÜLEMİNDE
 
 # the text displayed in the search bar & search results
 search:
