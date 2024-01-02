@@ -175,9 +175,7 @@ exclude:
   - docs
   - tools
   - README.md
-  - LICENSE
   - rollup.config.js
-  - package*.json
 
 jekyll-archives:
   enabled: [categories, tags]
