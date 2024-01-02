@@ -28,17 +28,10 @@ google_analytics:
 
 theme_mode: dark
 
-# The CDN endpoint for images.
-# Notice that once it is assigned, the CDN url
-# will be added to all image (site avatar & posts' images) paths starting with '/'
-#
-# e.g. 'https://cdn.com'
 img_cdn:
 
-# the avatar on sidebar, support local or CORS resources
 avatar: "https://avatars.githubusercontent.com/u/40695466"
 
-# boolean type, the global switch for TOC in posts.
 toc: true
 
 comments:
@@ -58,7 +51,6 @@ pwa:
 
 paginate: 5
 
-# The base URL of your site
 baseurl: ""
 
 # ------------ The following options are not recommended to be modified ------------------
