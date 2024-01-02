@@ -8,10 +8,6 @@
   icon: "fa-brands fa-reddit-alien"
   url: 'https://www.reddit.com/r/tengrikut1923'
 
-- type: steam
-  icon: "fa-brands fa-steam"
-  url: 'https://store.steampowered.com/curator/12103124'
-
 - type: twitter
   icon: "fa-brands fa-x-twitter"
   url: 'https://twitter.com/tengrikut1923'
