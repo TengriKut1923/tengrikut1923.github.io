@@ -67,17 +67,17 @@ avatar: "https://avatars.githubusercontent.com/u/40695466"
 toc: true
 
 comments:
-  active: 'disqus'
+  active: 'giscus'
   # The active options are as follows:
   disqus:
-    shortname: https-tengrikut1923-github-io
+    shortname: #
   # utterances settings › https://utteranc.es/
   utterances:
-    repo: tengrikut1923/tengrikut1923.github.io
+    repo: #
     issue_term: # < url | pathname | title | ...>
   # Giscus options › https://giscus.app
   giscus:
-    repo: # <gh-username>/<repo>
+    repo: tengrikut1923/tengrikut1923.github.io
     repo_id:
     category:
     category_id:
