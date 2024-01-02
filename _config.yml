@@ -70,7 +70,7 @@ comments:
   active: 'disqus'
   # The active options are as follows:
   disqus:
-    shortname: 𐱅𐰭𐰼𐰃:𐰸𐰆𐱃:𝟏𝟗𝟐𝟑
+    shortname: tengrikut1923
   # utterances settings › https://utteranc.es/
   utterances:
     repo: tengrikut1923/tengrikut1923.github.io
