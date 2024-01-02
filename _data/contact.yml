@@ -4,9 +4,22 @@
   icon: "fa-brands fa-discord"
   url: 'https://discord.com/invite/5Ju4QGU9tR'
 
+- type: reddit
+  icon: "fa-brands fa-reddit-alien"
+  url: 'https://www.reddit.com/r/tengrikut1923'
+
+- type: steam
+  icon: "fa-brands fa-steam"
+  url: 'https://store.steampowered.com/curator/12103124'
+
 - type: twitter
   icon: "fa-brands fa-x-twitter"
+  url: 'https://twitter.com/tengrikut1923'
 
 - type: youtube
   icon: 'fab fa-youtube'
   url: 'https://youtube.com/tengrikut1923'
+
+- type: link
+  icon: 'fa-solid fa-link'
+  url: 'https://linktr.ee/tengrikut1923'
