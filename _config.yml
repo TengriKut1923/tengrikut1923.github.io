@@ -68,7 +68,7 @@ theme_mode: dark
 img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: https://avatars.githubusercontent.com/u/12654542
+avatar: https://avatars.githubusercontent.com/u/40695466
 
 # boolean type, the global switch for TOC in posts.
 toc: true
@@ -107,7 +107,7 @@ pwa:
 paginate: 5
 
 # The base URL of your site
-baseurl: ""
+baseurl: "https://tengrikut1923.github.io"
 
 # ------------ The following options are not recommended to be modified ------------------
 
@@ -175,9 +175,7 @@ exclude:
   - docs
   - tools
   - README.md
-  - LICENSE
   - rollup.config.js
-  - package*.json
 
 jekyll-archives:
   enabled: [categories, tags]
