@@ -68,14 +68,6 @@ toc: true
 
 comments:
   active: 'giscus'
-  # The active options are as follows:
-  disqus:
-    shortname: #
-  # utterances settings › https://utteranc.es/
-  utterances:
-    repo: #
-    issue_term: # < url | pathname | title | ...>
-  # Giscus options › https://giscus.app
   giscus:
     repo: tengrikut1923/tengrikut1923.github.io
     repo_id: 737562869
