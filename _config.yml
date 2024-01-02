@@ -14,12 +14,12 @@ timezone: Europe/Istanbul
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Keyur Ramoliya # the main title
+title: 𐱅𐰭𐰼𐰃:𐰸𐰆𐱃:𝟏𝟗𝟐𝟑
 
-tagline: No one read the blogs, but I kept typing anyway. My personal thoughts on technology, software development, business & common sense. # it will display as the sub-title
+tagline: Mengü Tengri'nin gücüyle...
 
 description: >- # used by seo meta and the atom feed
-  No one read the blogs, but I kept typing anyway. My personal thoughts on technology, software development, business & common sense.
+  Eskiden beri neysek sonsuza kadar oyuz!
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: "https://keyurramoliya.com"
