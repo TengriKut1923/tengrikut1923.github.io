@@ -21,25 +21,11 @@ social:
   links:
     - https://www.tengrikut1923.com/
 
-google_site_verification: # fill in to your verification string
-
-# ↑ --------------------------
-# The end of `jekyll-seo-tag` settings
+google_site_verification: google1e9a0ce83968867d.html
 
 google_analytics:
   id: G-EMGQV4HZ5N
 
-# Prefer color scheme setting.
-#
-# Note: Keep empty will follow the system prefer color by default,
-# and there will be a toggle to switch the theme between dark and light
-# on the bottom left of the sidebar.
-#
-# Available options:
-#
-#     light  - Use the light color scheme
-#     dark   - Use the dark color scheme
-#
 theme_mode: dark
 
 # The CDN endpoint for images.
