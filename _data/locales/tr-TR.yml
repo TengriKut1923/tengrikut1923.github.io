@@ -37,13 +37,13 @@ notification:
 # ----- Posts related labels -----
 
 post:
-  written_by: Yazan
+  written_by: Yazar
   posted: Gönderim
   updated: Güncelleme
   words: sözcük
   pageview_measure: görüntülenme
   read_time:
-    unit: dakikada
+    unit: birinde
     prompt: okunabilir
   relate_posts: Benzer Gönderiler
   share: Üleş
