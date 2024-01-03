@@ -54,7 +54,7 @@ pwa:
 
 paginate: 5
 
-baseurl: ""
+baseurl: "https://tengrikut1923.com"
 
 kramdown:
   syntax_highlighter: rouge
