@@ -1,6 +1,6 @@
 ---
-icon: fas fa-info-circle
-order: 5
+icon: fa-solid fa-circle-exclamation
+order: 4
 ---
 
 deneme
