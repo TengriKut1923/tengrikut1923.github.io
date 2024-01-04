@@ -4,10 +4,6 @@
   icon: "fa-brands fa-reddit-alien"
   url: 'https://git.tengrikut1923.com/reddit'
 
-- type: youtube
-  icon: 'fab fa-youtube'
-  url: 'https://git.tengrikut1923.com/youtube'
-
 - type: steam
   icon: "fa-brands fa-steam"
   url: 'https://git.tengrikut1923.com/steam'
@@ -15,6 +11,10 @@
 - type: discord
   icon: "fa-brands fa-discord"
   url: 'https://git.tengrikut1923.com/discord'
+
+- type: youtube
+  icon: 'fab fa-youtube'
+  url: 'https://git.tengrikut1923.com/youtube'
 
 - type: linktree
   icon: 'fa-solid fa-link'
