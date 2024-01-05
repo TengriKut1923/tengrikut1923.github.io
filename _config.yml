@@ -32,7 +32,7 @@ img_cdn:
 
 avatar: "https://avatars.githubusercontent.com/u/40695466"
 
-toc: false
+toc: true
 
 comments:
   active: 'giscus'
