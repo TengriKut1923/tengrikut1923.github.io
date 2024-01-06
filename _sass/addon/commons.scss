@@ -519,8 +519,8 @@ main {
     background: var(--shimmer-bg);
     height: 100%;
     width: 100%;
-    -webkit-animation: shimmer 1.3s;
-    animation: shimmer 1.3s;
+    -webkit-animation: shimmer;
+    animation: shimmer;
   }
 
   @-webkit-keyframes shimmer {
