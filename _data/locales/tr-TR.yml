@@ -27,6 +27,8 @@ panel:
   trending_tags: Yükselen İliştiriler
   toc: İçindekiler
 
+meta: :PLATFORM
+
 not_found:
   statment: Bağlantı bulunamadı.
 
