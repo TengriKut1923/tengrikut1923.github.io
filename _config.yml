@@ -49,7 +49,7 @@ comments:
 pwa:
   enabled: true
 
-paginate: 5
+paginate: 10
 
 baseurl: ""
 
