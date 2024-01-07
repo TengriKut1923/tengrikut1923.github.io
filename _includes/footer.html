@@ -8,6 +8,19 @@
   "
 >
   <p>
+    <a href="{{ site.social.links[0] }}">{{ site.social.name }}</a>.
+    {% if site.data.locales[include.lang].copyright.brief %}
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="{{ site.data.locales[include.lang].copyright.verbose }}"
+      >
+        {{- site.data.locales[include.lang].copyright.brief -}}
+      </span>
+    {% endif %}
+  </p>
+
+  <p>
     {%- capture _platform -%}
       <a href="https://www.tengrikut1923.com" target="_blank" rel="noopener">:𐰢𐰤𐰏𐰇:𐱅𐰭𐰼𐰃𐰤𐰤:𐰏𐰇𐰲𐰘𐰠𐰀:𐰾𐰚𐰓𐰤:𐰋𐰃𐰼𐰃:𐰤𐰘𐰾𐰚:𐰽𐰆𐰭𐰽𐰔𐰀:𐰓𐰚:𐰆𐰖𐰔</a>
     {%- endcapture -%}
