@@ -32,10 +32,6 @@ meta: :PLATFORM
 not_found:
   statment: Bağlantı bulunamadı.
 
-notification:
-  update_found: İçeriğin yeni bir sürümü var.
-  update: Güncelle
-
 # ----- Posts related labels -----
 
 post:
