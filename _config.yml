@@ -54,7 +54,7 @@ paginate: 10
 baseurl: ""
 
 plugins:
-  - "jekyll-href"
+  - "jekyll_href"
 
 kramdown:
   syntax_highlighter: rouge
