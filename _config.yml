@@ -29,9 +29,6 @@ google_site_verification: B-IiQacda1RM8Z9GRYJ4iQ6YIJfzOvXA1L78g07arfU
 google_analytics:
   id: G-6CR6XZ7ST2
 
-nofollow:
-    enable: true
-
 theme_mode: dark
 
 img_cdn:
