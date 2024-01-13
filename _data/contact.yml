@@ -2,7 +2,7 @@
 
 - type: reddit
   icon: "fa-brands fa-reddit-alien"
-  url: <a rel="nofollow" href="https://git.tengrikut1923.com/reddit">reddit</a>
+  url: 'https://git.tengrikut1923.com/reddit'
 
 - type: steam
   icon: "fa-brands fa-steam"
