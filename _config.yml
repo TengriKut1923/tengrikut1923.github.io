@@ -53,8 +53,9 @@ paginate: 10
 
 baseurl: ""
 
-nofollow:
-  enable: true
+plugin-vars:
+  {% href {{django-github}}/django/core/management/__init__.py#L398-L401
+  django.core.management.execute_from_command_line %}
 
 kramdown:
   syntax_highlighter: rouge
