@@ -53,9 +53,6 @@ paginate: 10
 
 baseurl: ""
 
-gems:
-  - jekyll_href
-
 kramdown:
   syntax_highlighter: rouge
   syntax_highlighter_opts: # Rouge Options › https://github.com/jneen/rouge#full-options
