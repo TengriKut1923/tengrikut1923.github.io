@@ -31,9 +31,6 @@ google_analytics:
 
 nofollow:
     enable: true
-    exclude:
-    - ornek1.com
-    - ornek2.com
 
 theme_mode: dark
 
