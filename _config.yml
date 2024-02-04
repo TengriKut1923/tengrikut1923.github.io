@@ -46,9 +46,7 @@ comments:
     lang: 'tr'
     reactions_enabled: '1'
 
-url: "https://www.tengrikut1923.com"
-  plugins:
-    - jekyll-sitemap
+sitemap: true
 
 pwa:
   enabled: true
