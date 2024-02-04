@@ -46,8 +46,6 @@ comments:
     lang: 'tr'
     reactions_enabled: '1'
 
-sitemap: true
-
 pwa:
   enabled: true
 
