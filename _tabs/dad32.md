@@ -11,7 +11,9 @@ order: 4
         <th style="border: 1px solid #444; padding: 8px;">KISAYOL</th>
         <th style="border: 1px solid #444; padding: 8px;">SUNUM</th>
         <th style="border: 1px solid #444; padding: 8px;">ÜÖÖ</th>
-        <th style="border: 1px solid #444; padding: 8px;">YAPIT</th>
+        <th style="border: 1px solid #444; padding: 8px;">
+          <a href="https://ornek.com" style="color: #eee; text-decoration: none;">YAPIT</a>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -36,5 +38,6 @@ order: 4
     </tbody>
   </table>
 </div>
+
 
 
