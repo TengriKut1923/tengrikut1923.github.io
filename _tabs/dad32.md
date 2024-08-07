@@ -1,5 +1,4 @@
 ---
-title: DAD32
 icon: fas fa-stream
 order: 4
 ---
