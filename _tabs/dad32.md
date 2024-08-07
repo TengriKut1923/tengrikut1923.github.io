@@ -4,9 +4,10 @@ icon: fas fa-stream
 order: 4
 ---
 
-<div style="text-align: left; padding: 0; margin: 0;">
-
-  <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed;">
+<div style="text-align: center; padding: 0; margin: 0;">
+  <!-- KYG Tablosu -->
+  <h2 style="text-align: center; color: #eee;">KYG</h2>
+  <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; width: 100%;">
     <thead>
       <tr style="background-color: #555;">
         <th style="border: 1px solid #444; padding: 8px; text-align: center;">SUNUM</th>
@@ -39,7 +40,42 @@ order: 4
     </tbody>
   </table>
 
+  <!-- KDT Tablosu -->
+  <h2 style="text-align: center; color: #eee;">KDT</h2>
+  <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; width: 100%;">
+    <thead>
+      <tr style="background-color: #555;">
+        <th style="border: 1px solid #444; padding: 8px; text-align: center;">Başlık 1</th>
+        <th style="border: 1px solid #444; padding: 8px; text-align: center;">Başlık 2</th>
+        <th style="border: 1px solid #444; padding: 8px; text-align: center;">Başlık 3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background-color: #444;">
+        <td style="border: 1px solid #555; padding: 8px;">Açıklama 1</td>
+        <td style="border: 1px solid #555; padding: 8px;">Açıklama 2</td>
+        <td style="border: 1px solid #555; padding: 8px;">
+          <a href="https://ornek4.com" target="_blank" style="color: #eee; text-decoration: none;">Açıklama 3</a>
+        </td>
+      </tr>
+      <tr style="background-color: #333;">
+        <td style="border: 1px solid #444; padding: 8px;">Açıklama 4</td>
+        <td style="border: 1px solid #444; padding: 8px;">Açıklama 5</td>
+        <td style="border: 1px solid #444; padding: 8px;">
+          <a href="https://ornek5.com" target="_blank" style="color: #eee; text-decoration: none;">Açıklama 6</a>
+        </td>
+      </tr>
+      <tr style="background-color: #444;">
+        <td style="border: 1px solid #555; padding: 8px;">Açıklama 7</td>
+        <td style="border: 1px solid #555; padding: 8px;">Açıklama 8</td>
+        <td style="border: 1px solid #555; padding: 8px;">
+          <a href="https://ornek6.com" target="_blank" style="color: #eee; text-decoration: none;">Açıklama 9</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
 
 
 
