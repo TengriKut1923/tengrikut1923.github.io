@@ -1,0 +1,28 @@
+layout:
+  post: Sunum
+  category: Ulam
+
+tabs:
+  home: EV
+  ulam: ULAM
+  belgelik: BELGELİK
+
+search:
+  hint: Ara
+  cancel: Boz
+  no_results: Sonuç bulunamadı.
+
+panel:
+  lastmod: Sunum
+
+meta: :PLATFORM
+
+not_found:
+  statment: Bet güncelliğini yitirdiği için silinmiş.
+
+post:
+  pageview_measure: görüntülenme
+
+categories:
+  category_measure: ulam
+  post_measure: sunum

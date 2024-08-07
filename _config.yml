@@ -1,0 +1,131 @@
+theme: jekyll-theme-chirpy
+
+lang: tr-TR
+
+timezone: Europe/Istanbul
+
+title: 𐱅𐰭𐰼𐰃:𐰸𐰆𐱃:1923
+
+tagline: Mengü Tengri'nin gücüyle...
+
+description: Eskiden beri neysek sonsuza kadar oyuz!
+  
+url: "https://tengrikut1923.com"
+
+social:
+  name: 𐱅𐰭𐰼𐰃:𐰸𐰆𐱃:1923
+
+webmaster_verifications:
+  google: B-IiQacda1RM8Z9GRYJ4iQ6YIJfzOvXA1L78g07arfU
+
+analytics:
+  google:
+    id: G-6CR6XZ7ST2
+  goatcounter:
+    id: 1923
+  cloudflare:
+    id: iu8m6xJOiuUUUZW-QFxhge-pwCbYjvAQ8_xQ-NoI
+
+pageviews:
+  provider: 'goatcounter'
+
+theme_mode: dark
+
+avatar: "https://avatars.githubusercontent.com/u/40695466"
+
+panel:
+  post:
+    lastmod: true
+
+comments:
+  provider: giscus
+  giscus:
+    repo: 'tengrikut1923/tengrikut1923.github.io'
+    repo_id: 'R_kgDOK_ZQ9Q'
+    category: 'Sunum'
+    category_id: 'DIC_kwDOK_ZQ9c4Cg3y1'
+    mapping: 'title'
+    strict: '0'
+    reactions_enabled: '0'
+    emit_metadata: '0'
+    input_position: 'bottom'
+    theme: 'preferred_color_scheme'
+    lang: 'tr'
+    loading: 'lazy'
+
+assets:
+  self_host:
+    enabled: true
+
+pwa:
+  enabled: true
+
+paginate: 10
+
+kramdown:
+  footnote_backlink: "&#8617;&#xfe0e;"
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+    # default_lang: console
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+      start_line: 1
+
+collections:
+  tabs:
+    output: true
+    sort_by: order
+  app:
+    output: true
+    permalink: /:name
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: true
+      toc: true
+      permalink: /:title/
+  - scope:
+      path: _drafts
+    values:
+      comments: false
+  - scope:
+      path: ""
+      type: tabs
+    values:
+      layout: page
+      permalink: /:title/
+
+sass:
+  style: compressed
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  profile: false
+  blanklines: false
+  ignore:
+    envs: [development]
+
+exclude:
+  - "*.gem"
+  - "*.gemspec"
+  - README.md
+  - "*.config.js"
+  - package*.json
+
+jekyll-archives:
+  enabled: [categories, tags]
+  layouts:
+    category: category
+    tag: tag
+  permalinks:
+    tag: /iliştiri/:name/
+    category: /ulam/:name/

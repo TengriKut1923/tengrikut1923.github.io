@@ -1,0 +1,79 @@
+---
+layout: default
+refactor: true
+tail_includes:
+  - post-nav
+  - comments
+---
+
+{% include lang.html %}
+
+<style>
+  .content {
+    margin-top: 20px;
+  }
+
+  .post-tail-wrapper {
+    margin-top: 20px;
+    position: relative;
+  }
+
+  .pageviews {
+    position: absolute;
+    bottom: 10px;
+    right: 0px;
+    z-index: 1000;
+  }
+</style>
+
+<article class="px-1">
+  <header>
+    <h1 data-toc-skip>{{ page.title }}</h1>
+    {% if page.description %}
+      <p class="post-desc fw-light mb-4">{{ page.description }}</p>
+    {% endif %}
+
+    {% if page.image %}
+      <div class="mt-3 mb-3">
+        <img src="{{ page.image.path | default: page.image }}"
+             class="preview-img{% if page.image.no_bg %} no-bg{% endif %}"
+             alt="{{ page.image.alt | xml_escape | default: 'Preview Image' }}"
+             w="1200" h="630"
+             {% if page.image.lqip %}lqip="{{ page.image.lqip }}"{% endif %}>
+        {% if page.image.alt %}
+          <figcaption class="text-center pt-2 pb-2">{{ page.image.alt }}</figcaption>
+        {% endif %}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="content">
+    {{ content }}
+  </div>
+
+  <div class="post-tail-wrapper text-muted">
+    <!-- categories -->
+    {% if page.categories.size > 0 %}
+      <div class="post-meta mb-0">
+        <i class="far fa-folder-open fa-fw me-1"></i>
+        {% for category in page.categories %}
+          <a href="{{ site.baseurl }}/ulam/{{ category | slugify | url_encode }}/">{{ category }}</a>
+          {%- unless forloop.last -%},{%- endunless -%}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="post-tail-bottom d-flex justify-content-between align-items-center mt-1 pb-2">
+      <!-- Placeholder for post-tail-bottom content -->
+    </div>
+
+    {% if site.pageviews.provider and site.analytics[site.pageviews.provider].id %}
+      <span class="pageviews">
+        <em id="pageviews">
+          <i class="fas fa-spinner fa-spin small"></i>
+        </em>
+        {{ site.data.locales[lang].post.pageview_measure }}
+      </span>
+    {% endif %}
+  </div>
+</article>

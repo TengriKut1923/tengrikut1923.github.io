@@ -1,0 +1,19 @@
+- type: reddit
+  icon: "fa-brands fa-reddit-alien"
+  url: 'https://git.tengrikut1923.com/reddit'
+
+- type: x
+  icon: "fa-brands fa-twitter"
+  url: 'https://git.tengrikut1923.com/twitter'
+
+- type: buğu
+  icon: 'fa-brands fa-steam'
+  url: 'https://git.tengrikut1923.com/buğu'
+
+- type: uyumsuzluk
+  icon: "fa-brands fa-discord"
+  url: 'https://git.tengrikut1923.com/uyumsuzluk'
+
+- type: bağlantı
+  icon: 'fa-solid fa-link'
+  url: 'https://git.tengrikut1923.com/bağlantı'
