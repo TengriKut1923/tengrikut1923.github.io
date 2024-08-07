@@ -1,8 +1,4 @@
----
-title: DAD32
-icon: fas fa-stream
-order: 4
----
+
 
 <div style="text-align: center;">
 <h1 class="page-title">{{ page.title | default: "DAD32" }}</h1>
