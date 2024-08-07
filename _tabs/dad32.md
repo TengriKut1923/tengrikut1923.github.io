@@ -5,6 +5,7 @@ order: 4
 ---
 
 <div style="text-align: center;">
+<h1 class="page-title">{{ page.title | default: "DAD32" }}</h1>
 
 <table style="border-collapse: collapse; width: 80%; margin: 0 auto; background-color: #333; color: #eee;">
   <thead>
