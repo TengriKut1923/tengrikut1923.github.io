@@ -6,7 +6,7 @@ order: 4
 
 <div style="text-align: left; padding: 0; margin: 0;">
   <!-- KYG Tablosu -->
-  <h2 style="text-align: center; color: #eee;">KYG</h2>
+  <h2 style="text-align: left; color: #eee;">KYG</h2>
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed;">
     <thead>
       <tr style="background-color: #555;">
@@ -45,7 +45,7 @@ order: 4
   </table>
 
   <!-- KDT Tablosu -->
-  <h2 style="text-align: center; color: #eee;">KDT</h2>
+  <h2 style="text-align: left; color: #eee;">KDT</h2>
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed;">
     <thead>
       <tr style="background-color: #555;">
