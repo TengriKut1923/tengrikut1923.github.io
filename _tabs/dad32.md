@@ -4,7 +4,7 @@ icon: fas fa-stream
 order: 4
 ---
 
-<table style="border-collapse: collapse; background-color: #333; color: #eee; margin-left: 0; table-layout: fixed; width: 100%;">
+<table style="border-collapse: collapse; background-color: #333; color: #eee; margin-left: 0; table-layout: fixed;">
   <thead>
     <tr style="background-color: #555;">
       <th style="border: 1px solid #444; padding: 8px;">KISAYOL</th>
