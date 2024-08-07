@@ -8,10 +8,10 @@ order: 4
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed;">
     <thead>
       <tr style="background-color: #555;">
-        <th style="border: 1px solid #444; padding: 8px;">KISAYOL</th>
-        <th style="border: 1px solid #444; padding: 8px;">SUNUM</th>
-        <th style="border: 1px solid #444; padding: 8px;">ÜÖÖ</th>
-        <th style="border: 1px solid #444; padding: 8px;">YAPIT</th>
+        <th style="border: 1px solid #444; padding: 8px; text-align: center;">KISAYOL</th>
+        <th style="border: 1px solid #444; padding: 8px; text-align: center;">SUNUM</th>
+        <th style="border: 1px solid #444; padding: 8px; text-align: center;">ÜÖÖ</th>
+        <th style="border: 1px solid #444; padding: 8px; text-align: center;">YAPIT</th>
       </tr>
     </thead>
     <tbody>
@@ -42,6 +42,7 @@ order: 4
     </tbody>
   </table>
 </div>
+
 
 
 
