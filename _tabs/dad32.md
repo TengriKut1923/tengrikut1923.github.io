@@ -4,7 +4,7 @@ icon: fas fa-stream
 order: 4
 ---
 
-<table style="border-collapse: collapse; width: 80%; background-color: #333; color: #eee; margin-left: 0;">
+<table style="border-collapse: collapse; width: 80%; background-color: #333; color: #eee; margin: 20px auto;">
   <thead>
     <tr style="background-color: #555;">
       <th style="border: 1px solid #444; padding: 8px;">Başlık 1</th>
