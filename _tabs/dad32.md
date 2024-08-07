@@ -11,9 +11,7 @@ order: 4
         <th style="border: 1px solid #444; padding: 8px;">KISAYOL</th>
         <th style="border: 1px solid #444; padding: 8px;">SUNUM</th>
         <th style="border: 1px solid #444; padding: 8px;">ÜÖÖ</th>
-        <th style="border: 1px solid #444; padding: 8px;">
-          <a href="https://ornek.com" style="color: #eee; text-decoration: none;">YAPIT</a>
-        </th>
+        <th style="border: 1px solid #444; padding: 8px;">YAPIT</th>
       </tr>
     </thead>
     <tbody>
@@ -21,7 +19,9 @@ order: 4
         <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 1</td>
         <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 2</td>
         <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 3</td>
-        <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 4</td>
+        <td style="border: 1px solid #555; padding: 8px;">
+          <a href="https://ornek.com" style="color: #eee; text-decoration: none;">Açıklama Bağlantısı</a>
+        </td>
       </tr>
       <tr style="background-color: #333;">
         <td style="border: 1px solid #444; padding: 8px;">Satır 2, Hücre 1</td>
@@ -38,6 +38,7 @@ order: 4
     </tbody>
   </table>
 </div>
+
 
 
 
