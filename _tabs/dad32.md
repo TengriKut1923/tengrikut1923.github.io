@@ -42,7 +42,6 @@ order: 4
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed;">
     <thead>
       <tr style="background-color: #555;">
-        <th style="border: 1px solid #444; padding: 8px; text-align: center;">KISAYOL</th>
         <th style="border: 1px solid #444; padding: 8px; text-align: center;">SUNUM</th>
         <th style="border: 1px solid #444; padding: 8px; text-align: center;">ÜÖÖ</th>
         <th style="border: 1px solid #444; padding: 8px; text-align: center;">YAPIT</th>
@@ -50,7 +49,6 @@ order: 4
     </thead>
     <tbody>
       <tr style="background-color: #444;">
-        <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 1</td>
         <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 2</td>
         <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 3</td>
         <td style="border: 1px solid #555; padding: 8px;">
@@ -58,7 +56,6 @@ order: 4
         </td>
       </tr>
       <tr style="background-color: #333;">
-        <td style="border: 1px solid #444; padding: 8px;">Satır 2, Hücre 1</td>
         <td style="border: 1px solid #444; padding: 8px;">Satır 2, Hücre 2</td>
         <td style="border: 1px solid #444; padding: 8px;">Satır 2, Hücre 3</td>
         <td style="border: 1px solid #444; padding: 8px;">
@@ -66,7 +63,6 @@ order: 4
         </td>
       </tr>
       <tr style="background-color: #444;">
-        <td style="border: 1px solid #555; padding: 8px;">Satır 3, Hücre 1</td>
         <td style="border: 1px solid #555; padding: 8px;">Satır 3, Hücre 2</td>
         <td style="border: 1px solid #555; padding: 8px;">Satır 3, Hücre 3</td>
         <td style="border: 1px solid #555; padding: 8px;">
