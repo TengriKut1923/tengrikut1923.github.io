@@ -6,10 +6,6 @@ order: 4
 
 <div style="text-align: center;">
 
-.page-title {
-  display: none;
-}
-
 <table style="border-collapse: collapse; width: 80%; margin: 0 auto; background-color: #333; color: #eee;">
   <thead>
     <tr style="background-color: #555;">
