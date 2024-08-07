@@ -1,31 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Varsayılan Başlık</title>
-  <style>
-    .dynamic-title {
-      text-align: center; /* Başlığı ortalar */
-    }
-  </style>
-</head>
-<body>
-  {% include lang.html %}
+---
+layout: default
+---
 
-  <article class="px-1">
-    {% if page.layout == 'page' or page.collection == 'tabs' %}
-      {% assign tab_key = page.title | downcase %}
-      {% assign title = site.data.locales[lang].tabs[tab_key] | default: page.title %}
-      <h1 class="dynamic-title">
-        {{ title }}
-      </h1>
-      <div class="content">
-        {{ content }}
-      </div>
-    {% else %}
+{% include lang.html %}
+
+<article class="px-1">
+  {% if page.layout == 'page' or page.collection == 'tabs' %}
+    {% assign tab_key = page.title | downcase %}
+    {% assign title = site.data.locales[lang].tabs[tab_key] | default: page.title %}
+    <h1 class="dynamic-title">
+      {{ title }}
+    </h1>
+    <div class="content">
       {{ content }}
-    {% endif %}
-  </article>
-</body>
-</html>
+    </div>
+  {% else %}
+    {{ content }}
+  {% endif %}
+</article>
