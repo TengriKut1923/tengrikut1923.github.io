@@ -32,7 +32,7 @@ order: 4
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; width: 100%;">
     <thead>
       <tr style="background-color: #555;">
-        <th style="border: 1px solid #444; padding: 8px; text-align: center;">KISAYOL/SUNUM/ÜÖÖ</th>
+        <th style="border: 1px solid #444; padding: 8px; text-align: center;">KISAYOL-SUNUM-ÜÖÖ</th>
         <th style="border: 1px solid #444; padding: 8px; text-align: center;">ÜÖÖ</th>
         <th style="border: 1px solid #444; padding: 8px; text-align: center;">YAPIT</th>
       </tr>
