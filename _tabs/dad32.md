@@ -4,7 +4,7 @@ icon: fas fa-stream
 order: 4
 ---
 
-<div style="text-align: center; padding: 0; margin: -20;">
+<div style="text-align: center; padding: 0; margin: 20;">
 
   <!-- KDT -->
   <h2 style="text-align: center; color: #eee;">KDT</h2>
