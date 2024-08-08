@@ -4,6 +4,8 @@ icon: fas fa-stream
 order: 4
 ---
 
+![](/assets/img/dad32/1.png)
+
 <div style="text-align: center; padding: 0; margin: 0;">
 
   <!-- KDT -->
@@ -57,10 +59,4 @@ order: 4
 
 </div>
 
-
-
-
-
-
-
-
+![](/assets/img/dad32/2.png)
