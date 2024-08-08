@@ -52,6 +52,4 @@ DOĞRULAMA NİTE YAPILIYOR?
 - `Yürütülebilir (YÜR/.yur) ➔ Executable (EXE/.exe)`{: .filepath}
 {: .prompt-info }
 
-![](/assets/img/sss/2.png)
-
 {% include embed/youtube.html id='Jsshre2aIP0' %}
