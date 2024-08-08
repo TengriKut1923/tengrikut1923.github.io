@@ -1,11 +1,11 @@
 ---
 title: DAD32
-icon: fa-solid fa-lock
+icon: fa-solid fa-key
 order: 1
 ---
 
 <div style="text-align: center;">
-  <img src="/assets/img/dad32/1.png" alt="Image" style="max-width: 100%; height: auto; margin-bottom: 20px;">
+  <img src="/assets/img/dad32/1.png" alt="1" style="max-width: 100%; height: auto; margin-bottom: 20px;">
 
   <!-- KDT -->
   <h2 style="text-align: center; color: #eee; margin-bottom: 10px; margin-top: 0px;">KDT</h2>
@@ -56,6 +56,5 @@ order: 1
     </tbody>
   </table>
 
-  <img src="/assets/img/dad32/2.png" alt="Image" style="max-width: 100%; height: auto; margin-top: 0px;">
+  <img src="/assets/img/dad32/2.png" alt="2" style="max-width: 100%; height: auto; margin-top: 0px;">
 </div>
-
