@@ -42,7 +42,7 @@ order: 4
         <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 2</td>
         <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 3</td>
         <td style="border: 1px solid #555; padding: 8px;">
-          <a href="https://ornek1.com" target="_blank" style="color: #eee; text-decoration: none;">Prince of Persia: The Sands of Time</a>
+          <a href="https://ornek1.com" target="_blank" style="color: #eee; text-decoration: none;">GİT</a>
         </td>
       </tr>
       <tr style="background-color: #333;">
