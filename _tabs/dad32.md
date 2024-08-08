@@ -1,12 +1,13 @@
 ---
 title: DAD32
 icon: fa-solid fa-lock
-order: 4
+order: 3
 ---
 
 ![](/assets/img/dad32/1.png)
 
-<div style="text-align: center; padding: 0; margin: 0;">
+<div style="text-align: center; padding: 0">
+
   <!-- KDT -->
   <h2 style="text-align: center; color: #eee;">KDT</h2>
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; width: 100%;">
@@ -56,7 +57,5 @@ order: 4
     </tbody>
   </table>
 </div>
-
-
 
 ![](/assets/img/dad32/2.png)
