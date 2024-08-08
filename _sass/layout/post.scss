@@ -2,6 +2,10 @@
   Post-specific style
 */
 
+a {
+  text-decoration: none;
+}
+
 %btn-post-nav {
   width: 50%;
   position: relative;
@@ -263,7 +267,7 @@ header {
 
       &:hover {
         color: var(--toc-highlight);
-        text-decoration: underline;
+        text-decoration: none;
       }
 
       &::before {
