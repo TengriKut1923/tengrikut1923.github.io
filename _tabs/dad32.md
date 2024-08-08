@@ -6,7 +6,7 @@ order: 3
 
 ![](/assets/img/dad32/1.png)
 
-<div style="text-align: center; padding: 0">
+<div style="text-align: center; margin: 0;">
 
   <!-- KDT -->
   <h2 style="text-align: center; color: #eee;">KDT</h2>
