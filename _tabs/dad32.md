@@ -7,7 +7,7 @@ order: 4
 <div style="text-align: center; padding: 0; margin: 0;">
 
   <!-- KDT -->
-  <h2 style="text-align: center; color: #eee;">KDT</h2>
+  <h2 style="text-align: center; color: #eee;">«KDT»</h2>
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; width: 100%;">
     <thead>
       <tr style="background-color: #555;">
