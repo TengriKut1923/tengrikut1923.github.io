@@ -1,6 +1,6 @@
 ---
 layout: belgelik
 title: BELGELİK
-icon: fas fa-archive
+icon: fa-solid fa-database
 order: 2
 ---
