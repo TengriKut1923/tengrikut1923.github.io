@@ -31,24 +31,26 @@ order: 4
     </blockquote>
 
     <blockquote class="prompt-info">
-        <li><code>Biçim ➔ Format</code></li>
-        <li><code>Boyut ➔ Size</code></li>
-        <li><code>Bölge ➔ Region</code></li>
-        <li><code>Buğu ➔ Steam</code></li>
-        <li><code>Döküm ➔ Dump</code></li>
-        <li><code>Döngücül Artıklık Denetimi (DAD32) ➔ Cyclic Redundancy Check (CRC32)</code></li>
-        <li><code>Düzen ➔ System</code></li>
-        <li><code>Eski İyi Oyunlar (EİO) ➔ Good Old Games (GOG)</code></li>
-        <li><code>Küçükyazılım Gözenekler (KYG-GÖZ) ➔ Microsoft Windows (MSW-WIN)</code></li>
-        <li><code>Kunguter Dürek Takımı (KDT) ➔ Android Package Kit (APK)</code></li>
-        <li><code>Sunum ➔ Release</code></li>
-        <li><code>Sürüm ➔ Version</code></li>
-        <li><code>Yama ➔ Fix/Mod</code></li>
-        <li><code>Yapım ➔ Developer</code></li>
-        <li><code>Yapıt ➔ Work</code></li>
-        <li><code>Yayım ➔ Warez</code></li>
-        <li><code>Yeniden Dürekleyici ➜ Repacker</code></li>
-        <li><code>Yürütülebilir (YÜR/.yur) ➔ Executable (EXE/.exe)</code></li>
+        <ul>
+            <li><strong>Biçim</strong> ➔ <em>Format</em></li>
+            <li><strong>Boyut</strong> ➔ <em>Size</em></li>
+            <li><strong>Bölge</strong> ➔ <em>Region</em></li>
+            <li><strong>Buğu</strong> ➔ <em>Steam</em></li>
+            <li><strong>Döküm</strong> ➔ <em>Dump</em></li>
+            <li><strong>Döngücül Artıklık Denetimi (DAD32)</strong> ➔ <em>Cyclic Redundancy Check (CRC32)</em></li>
+            <li><strong>Düzen</strong> ➔ <em>System</em></li>
+            <li><strong>Eski İyi Oyunlar (EİO)</strong> ➔ <em>Good Old Games (GOG)</em></li>
+            <li><strong>Küçükyazılım Gözenekler (KYG-GÖZ)</strong> ➔ <em>Microsoft Windows (MSW-WIN)</em></li>
+            <li><strong>Kunguter Dürek Takımı (KDT)</strong> ➔ <em>Android Package Kit (APK)</em></li>
+            <li><strong>Sunum</strong> ➔ <em>Release</em></li>
+            <li><strong>Sürüm</strong> ➔ <em>Version</em></li>
+            <li><strong>Yama</strong> ➔ <em>Fix/Mod</em></li>
+            <li><strong>Yapım</strong> ➔ <em>Developer</em></li>
+            <li><strong>Yapıt</strong> ➔ <em>Work</em></li>
+            <li><strong>Yayım</strong> ➔ <em>Warez</em></li>
+            <li><strong>Yeniden Dürekleyici</strong> ➜ <em>Repacker</em></li>
+            <li><strong>Yürütülebilir (YÜR/.yur)</strong> ➔ <em>Executable (EXE/.exe)</em></li>
+        </ul>
     </blockquote>
 
     <div>
