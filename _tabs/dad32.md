@@ -6,10 +6,10 @@ order: 1
 
 ![](/assets/img/dad32/1.png)
 
-<div style="text-align: center; margin-top: -20px;">
+<div style="text-align: center; margin-top: -20px; margin: 0;">
 
   <!-- KDT -->
-  <h2 style="text-align: center; color: #eee;">KDT</h2>
+  <h2 style="text-align: center; color: #eee; margin: 0;">KDT</h2>
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; width: 100%;">
     <thead>
       <tr style="background-color: #555;">
@@ -30,7 +30,7 @@ order: 1
   </table>
 
   <!-- KYG -->
-  <h2 style="text-align: center; color: #eee;>KYG</h2>
+  <h2 style="text-align: center; color: #eee; margin: 0;">KYG</h2>
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; width: 100%;">
     <thead>
       <tr style="background-color: #555;">
