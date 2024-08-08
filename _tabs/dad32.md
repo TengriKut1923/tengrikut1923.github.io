@@ -9,7 +9,7 @@ order: 1
 <div style="text-align: center;">
 
   <!-- KDT -->
-  <h2 style="text-align: center; color: #eee; margin-bottom: 10px; margin-top: -10px">KDT</h2>
+  <h2 style="text-align: center; color: #eee; margin-bottom: 10px; margin-top: -15px">KDT</h2>
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; width: 100%;">
     <thead>
       <tr style="background-color: #555;">
@@ -30,7 +30,7 @@ order: 1
   </table>
 
   <!-- KYG -->
-  <h2 style="text-align: center; color: #eee; margin-bottom: 10px; margin-top: -10px">KYG</h2>
+  <h2 style="text-align: center; color: #eee; margin-bottom: 10px; margin-top: -15px">KYG</h2>
   <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; width: 100%;">
     <thead>
       <tr style="background-color: #555;">
