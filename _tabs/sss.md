@@ -30,7 +30,7 @@ order: 4
         <p>Burası yazışmalık alanıdır. Yasalara bağlı olduğundan <strong>bağlantı</strong> bulunmaz. Ayrıca istekte bulunmayınız. <strong>Yasaklanmamak</strong> için de bağlam dışı sorular sormaktan kaçınınız!</p>
     </blockquote>
 
-    <ul class="prompt-info">
+    <blockquote class="prompt-info">
         <li><code>Biçim ➔ Format</code></li>
         <li><code>Boyut ➔ Size</code></li>
         <li><code>Bölge ➔ Region</code></li>
@@ -49,7 +49,7 @@ order: 4
         <li><code>Yayım ➔ Warez</code></li>
         <li><code>Yeniden Dürekleyici ➜ Repacker</code></li>
         <li><code>Yürütülebilir (YÜR/.yur) ➔ Executable (EXE/.exe)</code></li>
-    </ul>
+    </blockquote>
 
     <div>
         {% include embed/youtube.html id='Jsshre2aIP0' %}
