@@ -1,6 +1,6 @@
 ---
 title: DAD32
-icon: fas fa-stream
+icon: fa-solid fa-lock
 order: 4
 ---
 
