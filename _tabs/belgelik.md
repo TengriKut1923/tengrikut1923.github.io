@@ -2,5 +2,5 @@
 layout: belgelik
 title: BELGELİK
 icon: fa-solid fa-database
-order: 2
+order: 3
 ---

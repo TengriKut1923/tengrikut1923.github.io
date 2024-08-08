@@ -1,7 +1,7 @@
 ---
 title: DAD32
 icon: fa-solid fa-lock
-order: 3
+order: 1
 ---
 
 ![](/assets/img/dad32/1.png)
