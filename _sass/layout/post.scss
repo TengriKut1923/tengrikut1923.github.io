@@ -261,18 +261,26 @@ header {
       overflow: hidden;
       text-overflow: ellipsis;
 
+      &:hover {
+        color: var(--toc-highlight);
+        text-decoration: underline;
+      }
+
       &::before {
         display: none;
       }
     }
 
     .is-active-link {
+      color: var(--toc-highlight) !important;
       font-weight: 600;
 
       &::before {
+        display: inline-block;
         width: 1px;
         left: -1px;
         height: 1.25rem;
+        background-color: var(--toc-highlight) !important;
       }
     }
 
