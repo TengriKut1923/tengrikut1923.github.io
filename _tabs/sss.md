@@ -3,75 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSS</title>
+    <title>Belge Başlığı</title>
     <style>
-        /* Genel Stil Ayarları */
-        body {
-            margin: 0; /* Sayfanın kenar boşluklarını sıfırlar */
-            padding: 0; /* Sayfanın iç boşluklarını sıfırlar */
-            font-family: Arial, sans-serif; /* Yazı tipi */
-        }
-
-        /* İçerik Alanı */
         div {
-            margin-top: 0; /* Üst boşluğu sıfırlar */
-            margin-bottom: 0; /* Alt boşluğu sıfırlar */
-            padding-top: 0; /* Üst iç boşluğu sıfırlar */
-            padding-bottom: 0; /* Alt iç boşluğu sıfırlar */
+            margin: 0;
+            padding: 0;
         }
 
-        /* Görsel Stil */
+        img, h2, p, blockquote {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
         img {
-            max-width: 100%; /* Görselin genişliği konteynerle sınırlı */
-            height: auto; /* Görselin yüksekliği orantılı */
+            display: block;
+            margin: 0 auto;
         }
 
-        /* Başlık ve Paragraflar */
         h2 {
-            margin-top: 10px; /* Başlıkların üst boşluğu */
-            margin-bottom: 5px; /* Başlıkların alt boşluğu */
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         p {
-            margin-top: 5px; /* Paragrafların üst boşluğu */
-            margin-bottom: 10px; /* Paragrafların alt boşluğu */
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
 
-        /* Blockquote */
         blockquote {
-            margin: 10px 0; /* Üst ve alt boşluk */
-            padding: 10px; /* İç boşluk */
-            border-left: 4px solid #007bff; /* Sol kenar çizgisi */
-        }
-
-        .prompt-tip {
-            background-color: #e7f1ff; /* Arka plan rengi */
-            border-left: 4px solid #007bff; /* Sol kenar çizgisi */
-        }
-
-        .prompt-danger {
-            background-color: #f8d7da; /* Arka plan rengi */
-            border-left: 4px solid #dc3545; /* Sol kenar çizgisi */
-        }
-
-        .prompt-info {
-            background-color: #d1ecf1; /* Arka plan rengi */
-            border-left: 4px solid #17a2b8; /* Sol kenar çizgisi */
-        }
-
-        .prompt-info ul {
-            list-style-type: none; /* Liste işaretlerini kaldırır */
-            padding: 0; /* Liste iç boşluklarını sıfırlar */
-        }
-
-        .prompt-info li {
-            margin-bottom: 5px; /* Liste elemanları arasındaki boşluk */
-        }
-
-        /* Youtube Embed */
-        .youtube-embed {
-            margin-top: 10px; /* Youtube embed üst boşluğu */
-            margin-bottom: 10px; /* Youtube embed alt boşluğu */
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -125,7 +88,7 @@
             </ul>
         </blockquote>
 
-        <div class="youtube-embed">
+        <div>
             {% include embed/youtube.html id='Jsshre2aIP0' %}
         </div>
     </div>
