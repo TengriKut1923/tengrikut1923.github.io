@@ -4,9 +4,8 @@ icon: fa-solid fa-lock
 order: 1
 ---
 
-![](/assets/img/dad32/1.png)
-
 <div style="text-align: center;">
+  <img src="/assets/img/dad32/1.png" alt="Image" style="max-width: 100%; height: auto; margin-bottom: 20px;">
 
   <!-- KDT -->
   <h2 style="text-align: center; color: #eee; margin-bottom: 10px; margin-top: 0px">KDT</h2>
@@ -57,6 +56,6 @@ order: 1
     </tbody>
   </table>
 
+  <img src="/assets/img/dad32/2.png" alt="Image" style="max-width: 100%; height: auto; margin-top: 20px;">
 </div>
 
-![](/assets/img/dad32/2.png)
