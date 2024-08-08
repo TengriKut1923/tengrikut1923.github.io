@@ -54,7 +54,7 @@ order: 4
         <td style="border: 1px solid #444; padding: 8px;">EF14FC22</td>
         <td style="border: 1px solid #444; padding: 8px;">00.00.0000</td>
         <td style="border: 1px solid #444; padding: 8px;">
-          <a href="https://ornek2.com" target="_blank" style="color: #eee; text-decoration: none;">Satır 2, Hücre 4</a>
+          <a href="https://ornek2.com" target="_blank" style="color: #eee; text-decoration: none;">GİT</a>
         </td>
       </tr>
     </tbody>
