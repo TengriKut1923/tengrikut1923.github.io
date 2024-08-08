@@ -29,7 +29,7 @@ order: 4
 
   <!-- KYG -->
   <h2 style="text-align: center; color: #eee;">KYG</h2>
-  <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; width: 100%;">
+  <table style="border-collapse: collapse; background-color: #333; color: #eee; table-layout: fixed; word-wrap: break-word; width: 100%;">
     <thead>
       <tr style="background-color: #555;">
         <th style="border: 1px solid #444; padding: 8px; text-align: center;">SUNUM</th>
@@ -42,7 +42,7 @@ order: 4
         <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 2</td>
         <td style="border: 1px solid #555; padding: 8px;">Satır 1, Hücre 3</td>
         <td style="border: 1px solid #555; padding: 8px;">
-          <a href="https://ornek1.com" target="_blank" style="color: #eee; text-decoration: none;">GİT</a>
+          <a href="https://ornek1.com" target="_blank" style="color: #eee; text-decoration: none;">GSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSİT</a>
         </td>
       </tr>
       <tr style="background-color: #333;">
