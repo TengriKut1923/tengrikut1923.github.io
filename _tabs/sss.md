@@ -32,24 +32,24 @@ order: 4
 
     <blockquote class="prompt-info">
         <ul>
-            <li><strong>Biçim</strong> ➔ <em>Format</em></li>
-            <li><strong>Boyut</strong> ➔ <em>Size</em></li>
-            <li><strong>Bölge</strong> ➔ <em>Region</em></li>
-            <li><strong>Buğu</strong> ➔ <em>Steam</em></li>
-            <li><strong>Döküm</strong> ➔ <em>Dump</em></li>
-            <li><strong>Döngücül Artıklık Denetimi (DAD32)</strong> ➔ <em>Cyclic Redundancy Check (CRC32)</em></li>
-            <li><strong>Düzen</strong> ➔ <em>System</em></li>
-            <li><strong>Eski İyi Oyunlar (EİO)</strong> ➔ <em>Good Old Games (GOG)</em></li>
-            <li><strong>Küçükyazılım Gözenekler (KYG-GÖZ)</strong> ➔ <em>Microsoft Windows (MSW-WIN)</em></li>
-            <li><strong>Kunguter Dürek Takımı (KDT)</strong> ➔ <em>Android Package Kit (APK)</em></li>
-            <li><strong>Sunum</strong> ➔ <em>Release</em></li>
-            <li><strong>Sürüm</strong> ➔ <em>Version</em></li>
-            <li><strong>Yama</strong> ➔ <em>Fix/Mod</em></li>
-            <li><strong>Yapım</strong> ➔ <em>Developer</em></li>
-            <li><strong>Yapıt</strong> ➔ <em>Work</em></li>
-            <li><strong>Yayım</strong> ➔ <em>Warez</em></li>
-            <li><strong>Yeniden Dürekleyici</strong> ➜ <em>Repacker</em></li>
-            <li><strong>Yürütülebilir (YÜR/.yur)</strong> ➔ <em>Executable (EXE/.exe)</em></li>
+            <li><strong>Biçim</strong> ➔ <strong>Format</strong></li>
+            <li><strong>Boyut</strong> ➔ <strong>Size</strong></li>
+            <li><strong>Bölge</strong> ➔ <strong>Region</strong></li>
+            <li><strong>Buğu</strong> ➔ <strong>Steam</strong></li>
+            <li><strong>Döküm</strong> ➔ <strong>Dump</strong></li>
+            <li><strong>Döngücül Artıklık Denetimi (DAD32)</strong> ➔ <strong>Cyclic Redundancy Check (CRC32)</strong></li>
+            <li><strong>Düzen</strong> ➔ <strong>System</strong></li>
+            <li><strong>Eski İyi Oyunlar (EİO)</strong> ➔ <strong>Good Old Games (GOG)</strong></li>
+            <li><strong>Küçükyazılım Gözenekler (KYG-GÖZ)</strong> ➔ <strong>Microsoft Windows (MSW-WIN)</strong></li>
+            <li><strong>Kunguter Dürek Takımı (KDT)</strong> ➔ <strong>Android Package Kit (APK)</strong></li>
+            <li><strong>Sunum</strong> ➔ <strong>Release</strong></li>
+            <li><strong>Sürüm</strong> ➔ <strong>Version</strong></li>
+            <li><strong>Yama</strong> ➔ <strong>Fix/Mod</strong></li>
+            <li><strong>Yapım</strong> ➔ <strong>Developer</strong></li>
+            <li><strong>Yapıt</strong> ➔ <strong>Work</strong></li>
+            <li><strong>Yayım</strong> ➔ <strong>Warez</strong></li>
+            <li><strong>Yeniden Dürekleyici</strong> ➜ <strong>Repacker</strong></li>
+            <li><strong>Yürütülebilir (YÜR/.yur)</strong> ➔ <strong>Executable (EXE/.exe)</strong></li>
         </ul>
     </blockquote>
 
