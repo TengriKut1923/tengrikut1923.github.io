@@ -56,6 +56,6 @@ order: 1
     </tbody>
   </table>
 
-  <img src="/assets/img/dad32/2.png" alt="Image" style="max-width: 100%; height: auto; margin-top: 10px;">
+  <img src="/assets/img/dad32/2.png" alt="Image" style="max-width: 100%; height: auto; margin-top: 8px;">
 </div>
 
