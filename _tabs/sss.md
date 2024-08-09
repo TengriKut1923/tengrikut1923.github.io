@@ -4,8 +4,6 @@ icon: fa-solid fa-bolt-lightning
 order: 4
 ---
 
-prompt-tip kısmına margin-top: 20px ekle
-
 <div>
     <img src="/assets/img/sss/1.png" alt="1">
 
