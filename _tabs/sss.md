@@ -14,7 +14,7 @@ order: 4
 </style>
 
 <div>
-    <img src="/assets/img/sss/1.png" alt="1">
+    <img src="/assets/img/sss/1.png" alt="1" style="max-width: 100%; height: auto; margin-bottom: 20px;">
 
     <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 15px;">BİZ KİMİZ?</h2>
     <p>Kesinkes korunması gereken oyunları <strong>sessiz kurulum</strong> olarak yeniden dürekleyen <a href="https://tengrikut1923.com" target="_blank"><strong>Türk</strong></a> öbeğiz.</p>
