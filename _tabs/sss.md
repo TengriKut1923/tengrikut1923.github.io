@@ -20,7 +20,8 @@ order: 4
     <p>Kesinkes korunması gereken oyunları <strong>sessiz kurulum</strong> olarak yeniden dürekleyen <a href="https://tengrikut1923.com" target="_blank"><strong>Türk</strong></a> öbeğiz.</p>
 
     <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">KORUNMASI GEREKEN OYUNLARI KİM BELİRLİYOR?</h2>
-    <p>Oyunlara yaşam veren <strong>topluluklar</strong>. Bir oyunun iyi inceleme alması korunmasını sağlamaz. Yıllardır oynanıyorsa, oynanışı, öyküsü iyiyse korunur. Bunlardan birini karşılaması yeter.</p>
+    <p>Oyunlara yaşam veren <strong>topluluklar</strong>. Bir oyunun iyi inceleme alması korunmasını sağlamaz.</p>
+    <p>Yıllardır oynanıyorsa, oynanışı, öyküsü iyiyse korunur. Bunlardan birini karşılaması yeter.</p>
 
     <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">SESSİZ KURULUM NEDİR?</h2>
     <p>Kurulumun çalıştırılmasıyla oyunun <strong>kendiliğinden</strong> yüklenmesi olayıdır. Kısayol geldiğinde yükleme bitmiş olur. Düzeltmeler, güncellemeler yapıldığı için geriye oynamak kalır.</p>
