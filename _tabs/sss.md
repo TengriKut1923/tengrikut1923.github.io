@@ -4,6 +4,8 @@ icon: fa-solid fa-bolt-lightning
 order: 4
 ---
 
+`.yur`
+
 <style>
     iframe {
         margin: 0;
