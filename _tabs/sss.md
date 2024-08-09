@@ -4,6 +4,8 @@ icon: fa-solid fa-bolt-lightning
 order: 4
 ---
 
+prompt-tip kısmına margin-top: 20px ekle
+
 <div>
     <img src="/assets/img/sss/1.png" alt="1">
 
@@ -22,7 +24,7 @@ order: 4
     <h2 style="text-align: left; color: #eee; margin-bottom: 0px; margin-top: 20px;">DOĞRULAMA NİTE YAPILIYOR?</h2>
     <p>İlgili oyunun konumuna gidip çalıştırın: "<strong>Doğrulama.exe</strong>", seçin: "<strong>Doğrulama.sfv</strong>".</p>
 
-    <blockquote class="prompt-tip">"margin-top: 20px;">
+    <blockquote class="prompt-tip" style="margin-top: 20px;">
         <p><strong>Yardım</strong> için <a href="https://yazismalik.tengrikut1923.com" target="_blank">yazışmalığa</a> gidebilir, <a href="https://git.tengrikut1923.com/uyumsuzluk" target="_blank">uyumsuzluk</a> sunucumuza katılabilirsiniz.</p>
     </blockquote>
 
