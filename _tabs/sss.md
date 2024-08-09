@@ -4,7 +4,7 @@ icon: fa-solid fa-bolt-lightning
 order: 4
 ---
 
-<div style="padding-top: 0;">
+<div>
 
 <style>
     iframe {
