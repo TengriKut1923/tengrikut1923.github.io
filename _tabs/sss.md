@@ -26,11 +26,11 @@ order: 4
         <p><strong>Yardım</strong> için <a href="https://yazismalik.tengrikut1923.com" target="_blank">yazışmalığa</a> gidebilir, <a href="https://git.tengrikut1923.com/uyumsuzluk" target="_blank">uyumsuzluk</a> sunucumuza katılabilirsiniz.</p>
     </blockquote>
 
-    <blockquote class="prompt-danger" style="margin-top: 20px;">
+    <blockquote class="prompt-danger">
         <p>Burası yazışmalık alanıdır. Yasalara bağlı olduğundan <strong>bağlantı</strong> bulunmaz. Ayrıca istekte bulunmayınız. <strong>Yasaklanmamak</strong> için de bağlam dışı sorular sormaktan kaçınınız!</p>
     </blockquote>
 
-    <blockquote class="prompt-info" style="margin-top: 20px;">
+    <blockquote class="prompt-info">
         <p>
             <li><strong>Biçim</strong> ➔ <strong>Format</strong></li>
             <li><strong>Boyut</strong> ➔ <strong>Size</strong></li>
@@ -53,7 +53,7 @@ order: 4
         </p>
     </blockquote>
 
-    <div>
+    <div style="margin-top: 20px;">
         {% include embed/youtube.html id='Jsshre2aIP0' %}
     </div>
 </div>
