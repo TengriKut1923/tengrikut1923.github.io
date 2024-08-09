@@ -53,7 +53,7 @@ order: 4
         </p>
     </blockquote>
 
-    <div style="margin-top: 20px;">
+    <div style="margin-bottom: 0px;">
         {% include embed/youtube.html id='Jsshre2aIP0' %}
     </div>
 </div>
