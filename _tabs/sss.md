@@ -5,6 +5,16 @@ order: 4
 ---
 
 <div>
+
+<style>
+    iframe {
+        margin: 0;
+        padding: 0;
+        border: none;
+        display: block;
+    }
+</style>
+
     <img src="/assets/img/sss/1.png" alt="1">
 
     <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">BİZ KİMİZ?</h2>
@@ -53,8 +63,7 @@ order: 4
         </p>
     </blockquote>
 
-    <div style="display: flex; flex-direction: column; gap: 0;">
-        <div style="margin-top: 0;">
+    <div>
         {% include embed/youtube.html id='Jsshre2aIP0' %}
     </div>
 </div>
