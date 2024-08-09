@@ -4,7 +4,7 @@ icon: fa-solid fa-bolt-lightning
 order: 4
 ---
 
-<div>
+<div style="padding-top: 0;">
 
 <style>
     iframe {
@@ -63,7 +63,7 @@ order: 4
         </p>
     </blockquote>
 
-    <div style="margin-top: 0;">
+    <div>
         {% include embed/youtube.html id='Jsshre2aIP0' %}
     </div>
 </div>
