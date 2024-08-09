@@ -16,19 +16,19 @@ order: 4
 <div>
     <img src="/assets/img/sss/1.png" alt="1">
 
-    <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">BİZ KİMİZ?</h2>
+    <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 15px;">BİZ KİMİZ?</h2>
     <p>Kesinkes korunması gereken oyunları <strong>sessiz kurulum</strong> olarak yeniden dürekleyen <a href="https://tengrikut1923.com" target="_blank"><strong>Türk</strong></a> öbeğiz.</p>
 
-    <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">KORUNMASI GEREKEN OYUNLARI KİM BELİRLİYOR?</h2>
+    <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 15px;">KORUNMASI GEREKEN OYUNLARI KİM BELİRLİYOR?</h2>
     <p>Oyunlara yaşam veren <strong>topluluklar</strong>. Bir oyunun iyi inceleme alması korunmasını sağlamaz. Yıllardır oynanıyorsa, oynanışı, öyküsü iyiyse korunur. Birini karşılaması korunması için yeterli olur.</p>
 
-    <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">SESSİZ KURULUM NEDİR?</h2>
+    <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 15px;">SESSİZ KURULUM NEDİR?</h2>
     <p>Kurulumun çalıştırılmasıyla oyunun <strong>kendiliğinden</strong> yüklenmesi olayıdır. Kısayol geldiğinde yükleme bitmiş olur. Düzeltmeler, güncellemeler yapıldığı için geriye oynamak kalır.</p>
 
-    <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">OYUN, SUNUM ADI NEDEN EF14FC22 GİBİ DAMGA İLE SAYIDAN OLUŞUYOR?</h2>
+    <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 15px;">OYUN, SUNUM ADI NEDEN EF14FC22 GİBİ DAMGA İLE SAYIDAN OLUŞUYOR?</h2>
     <p>Oyunun, sunumun <strong>.yur</strong> uzantısına ilişkin benzersiz <a href="https://tengrikut1923.com/dad32" target="_blank"><strong>DAD32</strong></a> değeri adı belirliyor. Böylece güvenlik düzeyini artırıp yapımcıların yarattığı ad kargaşası son veriyoruz. İlerici girişimlerimizden biridir.</p>
 
-    <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">DOĞRULAMA NİTE YAPILIYOR?</h2>
+    <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 15px;">DOĞRULAMA NİTE YAPILIYOR?</h2>
     <p>İlgili oyunun konumuna gidip çalıştırın: "<strong>Doğrulama.exe</strong>", seçin: "<strong>Doğrulama.sfv</strong>".</p>
 
     <blockquote class="prompt-tip" style="margin-top: 20px;">
