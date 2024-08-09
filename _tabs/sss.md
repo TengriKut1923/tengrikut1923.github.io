@@ -4,9 +4,16 @@ icon: fa-solid fa-bolt-lightning
 order: 4
 ---
 
-<div>
-    <iframe style="display: block; margin-bottom: 0; padding-bottom: 0;" ...></iframe>
+<style>
+    iframe {
+        margin: 0;
+        padding: 0;
+        border: none;
+        display: block;
+    }
+</style>
 
+<div>
     <img src="/assets/img/sss/1.png" alt="1">
 
     <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">BİZ KİMİZ?</h2>
