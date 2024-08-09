@@ -26,7 +26,7 @@ order: 4
     <p>Kurulumun çalıştırılmasıyla oyunun <strong>kendiliğinden</strong> yüklenmesi olayıdır. Kısayol geldiğinde yükleme bitmiş olur. Düzeltmeler, güncellemeler yapıldığı için geriye oynamak kalır.</p>
 
     <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">OYUN, SUNUM ADI NEDEN EF14FC22 GİBİ DAMGA İLE SAYIDAN OLUŞUYOR?</h2>
-    <p>Oyunun, sunumun <strong>.yur</strong> uzantısına ilişkin benzersiz <a href="https://tengrikut1923.com/dad32" target="_blank"><strong>DAD32</strong></a> değeri adı belirliyor. Böylece güvenliğin düzeyini artırıp yapımcıların yarattığı ad kargaşası son veriyoruz. İlerici girişimlerimizden biridir.</p>
+    <p>Oyunun, sunumun <strong>.yur</strong> uzantısına ilişkin benzersiz <a href="https://tengrikut1923.com/dad32" target="_blank"><strong>DAD32</strong></a> değeri adı belirliyor. Böylece güvenlik düzeyini artırıp yapımcıların yarattığı ad kargaşası son veriyoruz. İlerici girişimlerimizden biridir.</p>
 
     <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">DOĞRULAMA NİTE YAPILIYOR?</h2>
     <p>İlgili oyunun konumuna gidip çalıştırın: "<strong>Doğrulama.exe</strong>", seçin: "<strong>Doğrulama.sfv</strong>".</p>
