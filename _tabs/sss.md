@@ -7,7 +7,7 @@ order: 4
 <div>
     <img src="/assets/img/sss/1.png" alt="Image">
 
-    <h2>BİZ KİMİZ?</h2>
+    BİZ KİMİZ?
     <p>Kesinkes korunması gereken oyunları <strong>sessiz kurulum</strong> olarak yeniden dürekleyen <a href="https://tengrikut1923.com" target="_blank"><strong>Türk</strong></a> öbeğiz.</p>
 
     <h2>KORUNMASI GEREKEN OYUNLARI KİM BELİRLİYOR?</h2>
