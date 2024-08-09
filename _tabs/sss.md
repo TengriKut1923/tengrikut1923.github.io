@@ -53,8 +53,8 @@ order: 4
         </p>
     </blockquote>
 
-    <div>
-    <iframe style="display: block; margin-bottom: 0; padding-bottom: 0;" ...></iframe>
+    <div style="display: flex; flex-direction: column; gap: 0;">
+        <div style="margin-top: 0;">
         {% include embed/youtube.html id='Jsshre2aIP0' %}
     </div>
 </div>
