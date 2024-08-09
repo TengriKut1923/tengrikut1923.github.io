@@ -5,14 +5,6 @@ order: 4
 ---
 
 <div>
-
-<style>
-    .video-container + * {
-        margin-top: 0 !important;
-        padding-top: 0 !important;
-    }
-</style>
-
     <img src="/assets/img/sss/1.png" alt="1">
 
     <h2 style="text-align: left; font-size: 18px; color: #eee; margin-bottom: 0; margin-top: 20px;">BİZ KİMİZ?</h2>
@@ -61,7 +53,8 @@ order: 4
         </p>
     </blockquote>
 
-    <div>
+    <div style="margin-bottom: 0;">
+    <iframe style="display: block; margin-bottom: 0; padding-bottom: 0;" ...></iframe>
         {% include embed/youtube.html id='Jsshre2aIP0' %}
     </div>
 </div>
