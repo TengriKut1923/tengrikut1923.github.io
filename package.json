@@ -24,9 +24,9 @@
     "dompurify": "^3.0.8",
     "just-debounce-it": "^3.2.0",
     "preact": "^10.19.3",
-    "@preact/signals": "^1.2.2", // Signals eklenmeli
-    "swr": "^2.2.4", // Kullanılmıyorsa kaldırılabilir
-    "vite": "^6.2.5" // vite genelde devDependency'dir ama Astro onu kullanıyor
+    "@preact/signals": "^1.2.2",
+    "swr": "^2.2.4",
+    "vite": "^6.2.5"
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
