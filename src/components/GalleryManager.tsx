@@ -2,7 +2,9 @@ import { h, Fragment } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { signal, computed, effect } from "@preact/signals";
 import debounce from 'just-debounce-it';
-import { navigate } from 'astro:transitions'; // Astro global navigate
+// --- KALDIRILDI: 'navigate' import'u ---
+// import { navigate } from 'astro:transitions';
+// --- KALDIRMA SONU ---
 
 import Logger from '@/utils/logger';
 import SearchBar from './SearchBar';
@@ -46,7 +48,7 @@ type WindowWithPagefindAndAstro = Window & typeof globalThis & {
 };
 
 export default function GalleryManager() {
-    Logger.info('[GalleryManager] Ada render ediliyor...');
+    Logger.info('[GalleryManager] Ada render ediliyor (Ana Thread Pagefind, Polling, Astro Global Navigate)...');
 
     // State ve Sinyaller
     const [isClient, setIsClient] = useState(false);
@@ -68,7 +70,9 @@ export default function GalleryManager() {
 
     // --- Efektler ---
     useEffect(() => {
+        Logger.info('[GalleryManager] Client-side mount gerçekleşti.');
         setIsClient(true);
+
         const syncStateFromURL = () => {
             if (typeof window === 'undefined') return;
             const path = window.location.pathname;
@@ -82,9 +86,11 @@ export default function GalleryManager() {
         };
         syncStateFromURL();
         document.addEventListener('astro:after-swap', syncStateFromURL);
+
         fetcher('/json/cizelge.json')
             .then(data => { const d = data as CizelgeData; setCizelgeData(d); setCizelgeError(null); const p = currentPage.peek(); const t = d?.paginationInfo?.totalPages ?? 1; if (p > t) currentPage.value = 1; })
             .catch(error => { setCizelgeError(error); }).finally(() => setCizelgeLoading(false));
+
         let scriptElement: HTMLScriptElement | null = null;
         const loadPagefindScript = () => {
             const existing = document.getElementById('pagefind-script'); const potential = (window as WindowWithPagefindAndAstro).pagefind;
@@ -102,6 +108,7 @@ export default function GalleryManager() {
             document.body.appendChild(scriptElement);
         };
         loadPagefindScript();
+
         return () => { document.removeEventListener('astro:after-swap', syncStateFromURL); if (pollIntervalRef.current) clearInterval(pollIntervalRef.current); pollIntervalRef.current = undefined; pagefindApi.current = null; isPagefindReady.value = false; const s = document.getElementById('pagefind-script'); if (s) s.remove(); };
     }, []);
 
@@ -136,10 +143,19 @@ export default function GalleryManager() {
 
     effect(() => { debouncedPerformSearch(searchQuery.value); }); // Arama tetikle
 
-    // Navigasyon
+    // Navigasyon (Astro Global API Kullanımı)
     const navigateTo = (path: string) => {
         if (typeof window === 'undefined') return; const current = location.pathname + location.search + location.hash;
-        if (current !== path) { const nav = (window as WindowWithPagefindAndAstro).astro?.navigate; if (nav) nav(path); else location.href = path; }
+        if (current !== path) {
+             const nav = (window as WindowWithPagefindAndAstro).astro?.navigate; // Global API'yi al
+             if (nav) {
+                 Logger.info(`[Navigate] Astro global navigate: ${path}`);
+                 nav(path); // Kullan
+             } else {
+                 Logger.warn(`[Navigate] Astro navigate bulunamadı! Fallback: ${path}`);
+                 location.href = path; // Fallback
+             }
+        }
     };
     const buildPath = (page: number, query: string): string => { const q = (query || '').trim(); if (!q) return page > 1 ? `/${page}` : '/'; return `/ara/${encodeURIComponent(q)}${page > 1 ? `/${page}` : ''}`; };
     const handleSearch = (query: string) => { navigateTo(buildPath(1, query)); };
@@ -156,35 +172,16 @@ export default function GalleryManager() {
         <Fragment>
             <SearchBar initialQuery={searchQuery.value} onSearch={handleSearch} isLoading={isSearching.value} />
             {searchStatusMessage.value}
-
-            {/* --- DÜZELTME: JSX Kontrolleri Sağlamlaştırıldı --- */}
-            {/* Önce showStaticTables, sonra cizelgeData var mı diye kontrol et */}
             {showStaticTables.value && cizelgeData && (
-                <Fragment>
-                    {/* cizelgeData varsa, tags var mı ve length > 0 mı diye kontrol et */}
-                    {cizelgeData.tags && cizelgeData.tags.length > 0 && (
-                        <StaticTable title="#İLİŞTİRİLER" data={cizelgeData.tags} columns={3} tableClass="tags-container" />
-                    )}
-                </Fragment>
+                <Fragment> {cizelgeData.tags && cizelgeData.tags.length > 0 && ( <StaticTable title="#İLİŞTİRİLER" data={cizelgeData.tags} columns={3} tableClass="tags-container" /> )} </Fragment>
             )}
-            {/* --- DÜZELTME SONU --- */}
-
             <ImageGrid items={displayItems.value} isLoading={isLoading.value || isSearching.value} />
-
             {totalPages.value > 1 && !searchQuery.value && (
                 <Pagination currentPage={currentPage.value} totalPages={totalPages.value} buildPath={(page) => buildPath(page, searchQuery.value)} />
             )}
-
-            {/* --- DÜZELTME: JSX Kontrolleri Sağlamlaştırıldı --- */}
             {showStaticTables.value && cizelgeData && (
-                 <Fragment>
-                     {/* cizelgeData varsa, updated var mı ve length > 0 mı diye kontrol et */}
-                     {cizelgeData.updated && cizelgeData.updated.length > 0 && (
-                        <StaticTable title="SON GÜNCELLENEN SUNUMLAR" data={cizelgeData.updated} columns={2} tableClass="updated-table-container" />
-                     )}
-                 </Fragment>
+                 <Fragment> {cizelgeData.updated && cizelgeData.updated.length > 0 && ( <StaticTable title="SON GÜNCELLENEN SUNUMLAR" data={cizelgeData.updated} columns={2} tableClass="updated-table-container" /> )} </Fragment>
             )}
-            {/* --- DÜZELTME SONU --- */}
         </Fragment>
     );
 }
