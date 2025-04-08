@@ -2,6 +2,7 @@ import { h, Fragment } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { signal, computed, effect } from "@preact/signals";
 import debounce from 'just-debounce-it';
+// 'navigate' import'u kaldırıldı
 
 import Logger from '@/utils/logger';
 import SearchBar from './SearchBar';
@@ -14,7 +15,7 @@ interface GalleryItem { id: string; h: string; s: string; a: string; t: string[]
 interface TableDataItem { href: string; text: string; label: string; }
 interface CizelgeData { tags: TableDataItem[]; updated: TableDataItem[]; paginationInfo: { totalItems: number; itemsPerPage: number; totalPages: number; }; }
 
-// Pagefind API Tipleri (env.d.ts'de de tanımlı)
+// Pagefind API Tipleri
 interface PagefindApi { search: (query: string) => Promise<{ results: PagefindResultItem[] }>; options?: (opts: any) => Promise<void>; }
 interface PagefindResultItem { data: () => Promise<PagefindResultData>; id: string; }
 interface PagefindResultData { meta?: { id?: string }; id?: string; }
@@ -35,14 +36,17 @@ const fetcher = async (url: string): Promise<any> => {
 
 // Sabitler
 const DEBOUNCE_WAIT = 300;
-const PAGEFIND_POLL_INTERVAL = 100; // ms cinsinden yoklama aralığı
-const PAGEFIND_POLL_TIMEOUT = 3000; // ms cinsinden maksimum bekleme süresi
+const PAGEFIND_POLL_INTERVAL = 100;
+const PAGEFIND_POLL_TIMEOUT = 3000;
 
-// `window` için beklenen tip
-type WindowWithPagefind = Window & typeof globalThis & { pagefind?: PagefindApi };
+// `window` ve Astro global tipleri
+type WindowWithPagefindAndAstro = Window & typeof globalThis & {
+    pagefind?: PagefindApi;
+    astro?: { navigate?: (href: string, options?: object) => Promise<void>; };
+};
 
 export default function GalleryManager() {
-    Logger.info('[GalleryManager] Ada render ediliyor (Ana Thread Pagefind, Polling, Astro Navigate)...');
+    Logger.info('[GalleryManager] Ada render ediliyor (Ana Thread Pagefind, Polling, Astro Global Navigate)...');
 
     // State ve Sinyaller
     const [isClient, setIsClient] = useState(false);
@@ -60,7 +64,7 @@ export default function GalleryManager() {
     const pagefindScriptError = signal<string | null>(null);
     const isPagefindReady = signal<boolean>(false);
     const pagefindApi = useRef<PagefindApi | null>(null);
-    const pollIntervalRef = useRef<number | undefined>(undefined); // Polling interval ID'si
+    const pollIntervalRef = useRef<number | undefined>(undefined);
 
     // --- Efektler ---
     useEffect(() => {
@@ -79,126 +83,67 @@ export default function GalleryManager() {
                 pageFromUrl = parseInt(parts[0], 10);
             }
             pageFromUrl = Math.max(1, isNaN(pageFromUrl) ? 1 : pageFromUrl);
-            // Sinyal değerlerini sadece gerçekten değiştiyse güncelle
-            if (searchQuery.peek() !== queryFromUrl) {
-                Logger.info(`[URL Sync] Query: ${searchQuery.peek()} -> ${queryFromUrl}`);
-                searchQuery.value = queryFromUrl;
-                // Arama sorgusu değiştiğinde filtreleri sıfırla (arama tekrar yapılacak)
-                if (filteredItemIds.peek() !== null) filteredItemIds.value = null;
-            }
-            // Sayfayı da sadece değiştiyse güncelle
-            if (currentPage.peek() !== pageFromUrl) {
-                 Logger.info(`[URL Sync] Page: ${currentPage.peek()} -> ${pageFromUrl}`);
-                 currentPage.value = pageFromUrl;
-            }
+            if (searchQuery.peek() !== queryFromUrl) { searchQuery.value = queryFromUrl; if (filteredItemIds.peek() !== null) filteredItemIds.value = null; }
+            if (currentPage.peek() !== pageFromUrl) { currentPage.value = pageFromUrl; }
         };
         syncStateFromURL();
-        // View Transitions sonrası state'i senkronize etmek için 'astro:after-swap' kullan
         document.addEventListener('astro:after-swap', syncStateFromURL);
 
-        // Cizelge verisini çek
         fetcher('/json/cizelge.json')
             .then(data => {
                 const typedData = data as CizelgeData; setCizelgeData(typedData); setCizelgeError(null);
-                // Cizelge geldikten sonra sayfa numarasını doğrula
                 const currentPg = currentPage.peek(); const totalPgs = typedData?.paginationInfo?.totalPages ?? 1;
-                if (currentPg > totalPgs) {
-                    Logger.warn(`[URL Sync] Geçersiz sayfa (${currentPg}) düzeltiliyor -> 1`);
-                    currentPage.value = 1;
-                    // Eğer sayfa 1'e düzeltildiyse ve URL farklıysa, URL'yi de güncellemek gerekebilir
-                    // Ancak bu syncStateFromURL'in tekrar çalışmasıyla düzelebilir.
-                }
+                if (currentPg > totalPgs) { currentPage.value = 1; }
             })
             .catch(error => { setCizelgeError(error); })
             .finally(() => setCizelgeLoading(false));
 
-        // --- Pagefind Script Yükleme ve API Hazırlığını Bekleme (Polling ile) ---
+        // Pagefind Script Yükleme ve Polling
         let scriptElement: HTMLScriptElement | null = null;
         const loadPagefindScript = () => {
              const existingScript = document.getElementById('pagefind-script');
-             const potentialPagefind = (window as WindowWithPagefind).pagefind;
-
+             const potentialPagefind = (window as WindowWithPagefindAndAstro).pagefind;
              if (existingScript) {
-                  Logger.info('[GalleryManager] Pagefind script zaten DOM\'da.');
-                  if (potentialPagefind && typeof potentialPagefind.search === 'function' && !pagefindApi.current) {
-                      pagefindApi.current = potentialPagefind;
-                      isPagefindReady.value = true;
-                      pagefindScriptError.value = null;
-                      Logger.info('[GalleryManager] Mevcut Pagefind API kullanıma hazır.');
-                  } else if (!potentialPagefind && isPagefindReady.peek()) {
-                       Logger.warn('[GalleryManager] Pagefind API beklenmedik şekilde kayboldu!');
-                       isPagefindReady.value = false;
-                       pagefindScriptError.value = "Arama motoru bağlantısı koptu.";
-                  } else if (!potentialPagefind) {
-                       Logger.info('[GalleryManager] Mevcut script var ama API henüz hazır değil, onload bekleniyor olabilir.');
-                  }
-                  return; // Script zaten varsa tekrar ekleme
+                  if (potentialPagefind && typeof potentialPagefind.search === 'function' && !pagefindApi.current) { pagefindApi.current = potentialPagefind; isPagefindReady.value = true; pagefindScriptError.value = null; }
+                  else if (!potentialPagefind && isPagefindReady.peek()) { isPagefindReady.value = false; pagefindScriptError.value = "Arama motoru bağlantısı koptu."; }
+                  return;
              }
-
-            Logger.info('[GalleryManager] Pagefind script yükleniyor (Ana Thread)...');
-            scriptElement = document.createElement('script');
-            scriptElement.id = 'pagefind-script';
-            scriptElement.src = '/pagefind/pagefind.js';
-            scriptElement.type = 'module';
-
+            scriptElement = document.createElement('script'); scriptElement.id = 'pagefind-script'; scriptElement.src = '/pagefind/pagefind.js'; scriptElement.type = 'module';
             scriptElement.onload = () => {
                 Logger.info('[GalleryManager] Pagefind script yüklendi, API bekleniyor (Polling)...');
                 pagefindScriptError.value = null;
-
                 let elapsedTime = 0;
-                if (pollIntervalRef.current) clearInterval(pollIntervalRef.current); // Önceki interval'i temizle
-
+                if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
                 pollIntervalRef.current = window.setInterval(() => {
-                    const currentApi = (window as WindowWithPagefind).pagefind;
+                    const currentApi = (window as WindowWithPagefindAndAstro).pagefind;
                     if (currentApi && typeof currentApi.search === 'function') {
-                        clearInterval(pollIntervalRef.current);
-                        pollIntervalRef.current = undefined;
-                        if (!pagefindApi.current) { // Sadece ilk defa bulduysak ata
-                             pagefindApi.current = currentApi;
-                             isPagefindReady.value = true;
-                             Logger.info('[GalleryManager] Pagefind API yoklama ile bulundu ve hazır.');
-                        }
+                        clearInterval(pollIntervalRef.current); pollIntervalRef.current = undefined;
+                        if (!pagefindApi.current) { pagefindApi.current = currentApi; isPagefindReady.value = true; Logger.info('[GalleryManager] Pagefind API hazır.'); }
                     } else {
                         elapsedTime += PAGEFIND_POLL_INTERVAL;
                         if (elapsedTime >= PAGEFIND_POLL_TIMEOUT) {
-                            clearInterval(pollIntervalRef.current);
-                            pollIntervalRef.current = undefined;
-                            if (!isPagefindReady.peek()) { // Hala hazır değilse hata ver
-                                 Logger.error('[GalleryManager] Pagefind API zaman aşımına uğradı!');
-                                 pagefindScriptError.value = "Arama motoru başlatılamadı (zaman aşımı).";
-                                 isPagefindReady.value = false;
-                                 pagefindApi.current = null;
-                            }
+                            clearInterval(pollIntervalRef.current); pollIntervalRef.current = undefined;
+                            if (!isPagefindReady.peek()) { Logger.error('[GalleryManager] Pagefind API zaman aşımı!'); pagefindScriptError.value = "Arama motoru başlatılamadı (zaman aşımı)."; isPagefindReady.value = false; pagefindApi.current = null; }
                         }
                     }
                 }, PAGEFIND_POLL_INTERVAL);
             };
             scriptElement.onerror = (ev) => {
                 Logger.error('[GalleryManager] Pagefind script yüklenemedi!', ev);
-                pagefindScriptError.value = "Arama altyapısı yüklenemedi.";
-                isPagefindReady.value = false;
-                pagefindApi.current = null;
-                if (pollIntervalRef.current) clearInterval(pollIntervalRef.current); // Hata durumunda polling'i durdur
-                pollIntervalRef.current = undefined;
+                pagefindScriptError.value = "Arama altyapısı yüklenemedi."; isPagefindReady.value = false; pagefindApi.current = null;
+                if (pollIntervalRef.current) clearInterval(pollIntervalRef.current); pollIntervalRef.current = undefined;
             };
             document.body.appendChild(scriptElement);
         };
+        loadPagefindScript();
 
-        loadPagefindScript(); // Sayfa yüklendiğinde script yüklemeyi başlat
-
-        // --- Temizleme ---
+        // Temizleme
         return () => {
              document.removeEventListener('astro:after-swap', syncStateFromURL);
              Logger.info('[GalleryManager] Ada kaldırılıyor...');
-             if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
-             pollIntervalRef.current = undefined;
-             pagefindApi.current = null;
-             isPagefindReady.value = false;
-             const existingScript = document.getElementById('pagefind-script');
-             if (existingScript) {
-                  existingScript.remove();
-                  Logger.info('[GalleryManager] Pagefind script DOM\'dan kaldırıldı.');
-             }
+             if (pollIntervalRef.current) clearInterval(pollIntervalRef.current); pollIntervalRef.current = undefined;
+             pagefindApi.current = null; isPagefindReady.value = false;
+             const existingScript = document.getElementById('pagefind-script'); if (existingScript) existingScript.remove();
         };
     }, []);
 
@@ -221,60 +166,44 @@ export default function GalleryManager() {
     const isLoading = computed(() => cizelgeLoading || pageLoading);
     const combinedError = computed(() => cizelgeError?.message || pageError?.message || searchError.value || pagefindScriptError.value);
 
-    // Debounced Search (Ana Thread API Kullanımı)
+    // Debounced Search
     const debouncedPerformSearch = useMemo(() => {
         return debounce(async (query: string) => {
-            if (!isPagefindReady.value || !pagefindApi.current) {
-                 searchError.value = pagefindScriptError.value || 'Arama motoru hazır değil.';
-                 isSearching.value = false; filteredItemIds.value = []; return;
-            }
+            if (!isPagefindReady.value || !pagefindApi.current) { searchError.value = pagefindScriptError.value || 'Arama motoru hazır değil.'; isSearching.value = false; filteredItemIds.value = []; return; }
             if (query === '') { filteredItemIds.value = null; isSearching.value = false; searchError.value = null; return; }
-
-            const trimmedQuery = query.trim();
-            isSearching.value = true; searchError.value = null;
+            const trimmedQuery = query.trim(); isSearching.value = true; searchError.value = null;
             try {
                 const searchResult = await pagefindApi.current.search(trimmedQuery);
-                if (!searchResult?.results) { throw new Error('Pagefind geçersiz sonuç döndürdü.'); }
-                const dataPromises = searchResult.results.map(async (result) => {
-                     try { const data = await result.data(); return data?.meta?.id ?? data?.id ?? null; }
-                     catch (e) { Logger.error("result.data() hatası:", e); return null; }
-                });
-                const resolvedIds = await Promise.all(dataPromises);
-                const ids = resolvedIds.filter((id): id is string => typeof id === 'string' && id.trim() !== '');
+                if (!searchResult?.results) { throw new Error('Geçersiz sonuç.'); }
+                const dataPromises = searchResult.results.map(async (result) => { try { const d = await result.data(); return d?.meta?.id ?? d?.id ?? null; } catch (e) { return null; } });
+                const resolvedIds = await Promise.all(dataPromises); const ids = resolvedIds.filter((id): id is string => typeof id === 'string' && id.trim() !== '');
                 filteredItemIds.value = ids;
-            } catch (err) {
-                Logger.error(`[Search] Arama başarısız ("${trimmedQuery}"):`, err);
-                searchError.value = err instanceof Error ? err.message : 'Arama sırasında hata.';
-                filteredItemIds.value = [];
-            } finally { isSearching.value = false; }
+            } catch (err) { Logger.error(`[Search] Hata ("${trimmedQuery}"):`, err); searchError.value = err instanceof Error ? err.message : 'Arama hatası.'; filteredItemIds.value = []; }
+            finally { isSearching.value = false; }
         }, DEBOUNCE_WAIT);
-    }, [isPagefindReady.value, pagefindScriptError.value]); // Sinyal değerleri bağımlılık olarak eklendi
+    }, [isPagefindReady.value, pagefindScriptError.value]);
 
     // Arama Sorgusu Değiştiğinde Tetikleme
     effect(() => { debouncedPerformSearch(searchQuery.value); });
 
-    // --- Navigasyon (Astro'nun navigate fonksiyonu ile) ---
+    // Navigasyon (Astro Global API Kullanımı)
     const navigateTo = (path: string) => {
         if (typeof window !== 'undefined') {
             const currentPath = window.location.pathname + window.location.search + window.location.hash;
             if (currentPath !== path) {
-                 Logger.info(`[Navigate] Astro navigate kullanılıyor: ${path}`);
-                 navigate(path); // Astro'nun fonksiyonunu kullan
-            } else {
-                 Logger.info(`[Navigate] Zaten hedef yolda: ${path}`);
+                 const astroNavigate = (window as WindowWithPagefindAndAstro).astro?.navigate;
+                 if (astroNavigate && typeof astroNavigate === 'function') {
+                      Logger.info(`[Navigate] Astro global navigate: ${path}`);
+                      astroNavigate(path); // Astro'nun fonksiyonu
+                 } else {
+                      Logger.warn(`[Navigate] Astro navigate bulunamadı! Fallback: ${path}`);
+                      window.location.href = path; // Fallback
+                 }
             }
         }
     };
-    const buildPath = (page: number, query: string): string => {
-        const cleanQuery = (query || '').trim();
-        if (!cleanQuery) return page > 1 ? `/${page}` : '/';
-        const safeQuery = encodeURIComponent(cleanQuery);
-        return `/ara/${safeQuery}${page > 1 ? `/${page}` : ''}`;
-    };
-    const handleSearch = (query: string) => {
-        // Arama yapıldığında 1. sayfaya gitmek için URL oluştur ve navigate et
-        navigateTo(buildPath(1, query));
-    };
+    const buildPath = (page: number, query: string): string => { const q = (query || '').trim(); if (!q) return page > 1 ? `/${page}` : '/'; return `/ara/${encodeURIComponent(q)}${page > 1 ? `/${page}` : ''}`; };
+    const handleSearch = (query: string) => { navigateTo(buildPath(1, query)); };
 
     // Render Yardımcıları
     const displayItems = computed((): GalleryItem[] => { if (!pageData) return []; const ids = filteredItemIds.value; if (ids === null) return pageData; const idSet = new Set(ids); return pageData.filter(item => idSet.has(item.id)); });
@@ -285,9 +214,7 @@ export default function GalleryManager() {
     if (!isClient) { return <div data-hydration-placeholder="true" style="min-height: 400px;" aria-busy="true">Yükleniyor...</div>; }
     if (combinedError.value) {
         let msg = combinedError.value || 'Hata oluştu.';
-        if (pagefindScriptError.value) msg = pagefindScriptError.value;
-        else if (searchError.value) msg = searchError.value;
-        else if (cizelgeError || pageError) msg = 'Veri yükleme hatası.';
+        if (pagefindScriptError.value) msg = pagefindScriptError.value; else if (searchError.value) msg = searchError.value; else if (cizelgeError || pageError) msg = 'Veri yükleme hatası.';
         return <p class="error-message">{msg}</p>;
     }
     return (
