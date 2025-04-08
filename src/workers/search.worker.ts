@@ -1,30 +1,37 @@
 // src/workers/search.worker.ts
-import { expose } from 'comlink'; // Named import
+import { expose } from 'comlink';
 import Logger from '../utils/logger';
 
 // Global tipler src/env.d.ts içinde tanımlı
+// Ancak TypeScript'in `self` üzerinde bunu görmesini sağlamak için
+// type assertion kullanacağız.
 
 let pagefindApi: PagefindApi | null = null;
 let pagefindLoadError: Error | null = null;
 let isLoadingPagefind: boolean = false;
+
+// `self` için beklediğimiz tipi tanımlayalım (env.d.ts'deki WorkerGlobalScope ile uyumlu)
+type WorkerScope = typeof self & { pagefind?: PagefindApi };
 
 async function loadPagefind() {
     if (pagefindApi || pagefindLoadError || isLoadingPagefind) { return; }
     isLoadingPagefind = true;
     try {
         Logger.info('[Worker-Search] Pagefind modülü dinamik olarak import ediliyor...');
-        // @ts-ignore: TypeScript'in build-time kontrolünü atla, çünkü dosya runtime'da oluşacak.
+        // @ts-ignore: Modül bulma hatasını önlemek için hala gerekli olabilir.
+        // Veya tsconfig include ayarının çalıştığından emin olun. Şimdilik bırakalım.
         await import('/pagefind/pagefind.js');
 
-        // Global tip (WorkerGlobalScope) env.d.ts içinde tanımlı
-        // self'in tipini kontrol etmeye gerek yok, global tanım yeterli olmalı
-        if (typeof self.pagefind?.search === 'function') {
-            pagefindApi = self.pagefind; // Global'den al
+        // --- DÜZELTME: Type assertion kullanarak self.pagefind'a eriş ---
+        // TypeScript'e self'in WorkerScope tipinde olduğunu söylüyoruz.
+        if (typeof (self as WorkerScope).pagefind?.search === 'function') {
+            pagefindApi = (self as WorkerScope).pagefind; // Global'den alırken de assertion kullan
             Logger.info('[Worker-Search] Pagefind API başarıyla yüklendi.');
             pagefindLoadError = null;
         } else {
             throw new Error('Pagefind yüklendi ancak beklenen `self.pagefind.search` fonksiyonu bulunamadı.');
         }
+        // --- DÜZELTME SONU ---
     } catch (e) {
         Logger.error('[Worker-Search] Pagefind modülü import/başlatma hatası:', e);
         pagefindLoadError = e instanceof Error ? e : new Error(String(e));
@@ -35,8 +42,7 @@ async function loadPagefind() {
 }
 
 async function performSearch(query: string): Promise<string[]> {
-    await loadPagefind(); // Yüklemeyi dene/bekle
-    // Hata kontrolleri
+    await loadPagefind();
     if (pagefindLoadError) { throw new Error(`Arama motoru yüklenemedi: ${pagefindLoadError.message}`); }
     if (!pagefindApi) { throw new Error("Arama motoru API bulunamadı/hazır değil."); }
     if (typeof query !== 'string' || query.trim() === '') { return []; }
@@ -44,12 +50,13 @@ async function performSearch(query: string): Promise<string[]> {
     const trimmedQuery = query.trim();
     Logger.info(`[Worker-Search] Pagefind ile arama yapılıyor: "${trimmedQuery}"`);
     try {
-        const searchResult = await pagefindApi.search(trimmedQuery);
+        const searchResult = await pagefindApi.search(trimmedQuery); // pagefindApi zaten doğru tipte
         if (!searchResult?.results) { return []; }
+        Logger.info(`[Worker-Search] Ham sonuç sayısı: ${searchResult.results.length}`);
         const dataPromises = searchResult.results.map(async (result) => {
              try {
                  const data = await result.data();
-                 return data?.meta?.id ?? data?.id ?? null; // ID'yi al
+                 return data?.meta?.id ?? data?.id ?? null;
              } catch (dataError) { return null; }
         });
         const resolvedIds = await Promise.all(dataPromises);
@@ -63,7 +70,7 @@ async function performSearch(query: string): Promise<string[]> {
 }
 
 const api = { performSearch };
-expose(api); // Expose API
+expose(api);
 Logger.info('[Worker-Search] Arama Worker Comlink için hazır.');
 self.addEventListener('error', (event) => { Logger.error('[Worker-Search] Yakalanmayan Hata:', event.error || event.message); });
 self.addEventListener('unhandledrejection', (event) => { Logger.error('[Worker-Search] İşlenmeyen Red:', event.reason); });
