@@ -142,7 +142,7 @@ export default function GalleryManager() {
             })
             .finally(() => setCizelgeLoading(false));
 
-        // --- Worker Başlatma ve Pagefind Script Yükleme (DÜZELTİLMİŞ) ---
+        // --- Worker Başlatma ve Pagefind Script Yükleme ---
         let worker: Worker | null = null;
         let remoteApi: Comlink.Remote<SearchWorkerApi> | null = null;
         try {
@@ -161,13 +161,13 @@ export default function GalleryManager() {
                  searchWorkerApi.current = null;
             }
 
-            // --- PAGEFIND SCRIPT YÜKLEME DÜZELTMESİ ---
+            // --- PAGEFIND SCRIPT YÜKLEME ---
             if (!document.getElementById('pagefind-script')) {
                 Logger.info('[GalleryManager] Pagefind script yükleniyor...');
                 const script = document.createElement('script');
                 script.id = 'pagefind-script';
                 script.src = '/pagefind/pagefind.js'; // Build sonrası yol
-                script.type = 'module'; // <<<----- ÖNEMLİ DÜZELTME: Modül olarak yükle
+                script.type = 'module'; // Modül olarak yükle
                 script.onload = () => {
                     Logger.info('[GalleryManager] Pagefind script başarıyla yüklendi.');
                     pagefindScriptError.value = null; // Yükleme başarılıysa hatayı temizle
@@ -179,11 +179,9 @@ export default function GalleryManager() {
                 document.body.appendChild(script);
             } else {
                  Logger.info('[GalleryManager] Pagefind script zaten DOM\'da.');
-                 // Script zaten varsa ve hata state'i null değilse, önceki yükleme denemesi başarısız olmuş olabilir.
-                 // Ancak bu durumda onerror tekrar tetiklenmez. Başlangıçta null yapıp sadece onerror'da set etmek en güvenlisi.
-                 pagefindScriptError.value = null; // Mevcut script varsa bile başlangıçta hatayı temizle, onerror yakalayacaktır.
+                 pagefindScriptError.value = null; // Mevcut script varsa bile başlangıçta hatayı temizle
             }
-            // --- DÜZELTME SONU ---
+            // --- PAGEFIND SCRIPT YÜKLEME SONU ---
 
         } catch(err) {
              Logger.error('[GalleryManager] Worker başlatma/script yükleme hatası:', err);
@@ -203,7 +201,6 @@ export default function GalleryManager() {
             if (worker) worker.terminate();
             searchWorkerApi.current = null;
             isWorkerReady.value = false;
-            // Dinamik eklenen script'i DOM'dan kaldırmak genellikle iyi bir pratiktir.
             const existingScript = document.getElementById('pagefind-script');
             if (existingScript) {
                  Logger.info('[GalleryManager] Pagefind script DOM\'dan kaldırılıyor.');
@@ -251,15 +248,13 @@ export default function GalleryManager() {
     // Debounced Search Fonksiyonu
     const debouncedPerformSearch = useMemo(() => {
         return debounce(async (query: string) => {
-            // Önce Pagefind script hatasını kontrol et
             if (pagefindScriptError.value) {
                  Logger.warn('[Search] Pagefind script yüklenemediği için arama yapılamıyor.');
-                 searchError.value = pagefindScriptError.value; // Kullanıcıya göster
+                 searchError.value = pagefindScriptError.value;
                  isSearching.value = false;
                  filteredItemIds.value = [];
                  return;
             }
-            // Sonra Worker hazır mı kontrol et
             if (!searchWorkerApi.current || !isWorkerReady.value || workerInitError.value) {
                  Logger.warn('[Search] Worker hazır değil, arama yapılamıyor.');
                  searchError.value = workerInitError.value || 'Arama motoru hazır değil.';
@@ -278,7 +273,7 @@ export default function GalleryManager() {
 
             Logger.info(`[Search] Debounced arama başlıyor: "${query}"`);
             isSearching.value = true;
-            searchError.value = null; // Önceki arama hatasını temizle
+            searchError.value = null;
             try {
                 const ids = await searchWorkerApi.current.performSearch(query);
                 if (ids.length === 0 && query !== '') {
@@ -290,12 +285,11 @@ export default function GalleryManager() {
             } catch (err) {
                 Logger.error(`[Search] Worker araması başarısız oldu ("${query}"):`, err);
                 searchError.value = 'Arama sırasında bir hata oluştu.';
-                filteredItemIds.value = []; // Hata durumunda boş sonuç göster
+                filteredItemIds.value = [];
             } finally {
                 isSearching.value = false;
             }
         }, DEBOUNCE_WAIT);
-    // Bağımlılıklar: Worker durumu ve Pagefind script durumu değişirse debounce'u yeniden oluştur
     }, [isWorkerReady.value, workerInitError.value, pagefindScriptError.value]);
 
     // Arama Sorgusu Değiştiğinde Arama Tetiklemesi
@@ -309,11 +303,9 @@ export default function GalleryManager() {
     const navigateTo = (path: string) => {
         if (typeof window === 'undefined') return;
         const currentFullPath = window.location.pathname + window.location.search + window.location.hash;
-        // Sadece gerçekten farklıysa pushState yap
         if (currentFullPath !== path) {
             Logger.info(`[Navigate] Yönlendiriliyor: ${path}`);
             window.history.pushState({}, '', path);
-            // Astro'nun 'astro:page-load' olayını tetiklemesi gerekir, manuel tetiklemeye gerek yok.
         } else {
             Logger.info(`[Navigate] Zaten hedef yolda: ${path}`);
         }
@@ -330,26 +322,23 @@ export default function GalleryManager() {
     };
 
     const handleSearch = (query: string) => {
-        // Arama yapıldığında her zaman 1. sayfaya git
         const newPath = buildPath(1, query);
         navigateTo(newPath);
     };
 
     // --- Render Edilecek Öğeler ---
     const displayItems = computed((): GalleryItem[] => {
-        if (!pageData) return []; // Veri yoksa boş dizi
-
+        if (!pageData) return [];
         const currentSearchIds = filteredItemIds.value;
-        if (currentSearchIds === null) { // Arama aktif değilse
+        if (currentSearchIds === null) {
             return pageData;
-        } else { // Arama aktifse, filtrele
+        } else {
             const idSet = new Set(currentSearchIds);
             return pageData.filter((item: GalleryItem) => idSet.has(item.id));
         }
     });
 
     const searchStatusMessage = computed(() => {
-        // Sadece arama yapıldıysa, sonuç yoksa ve arama işlemi bittiyse mesaj göster
         if (searchQuery.value && filteredItemIds.value !== null && filteredItemIds.value.length === 0 && !isSearching.value) {
             return <p class="search-no-results">"{searchQuery.value}" için sonuç bulunamadı.</p>;
         }
@@ -357,10 +346,11 @@ export default function GalleryManager() {
     });
 
     const showStaticTables = computed(() => {
-        if (!isClient || !cizelgeData) return false; // Sadece client'da ve cizelge varken
+        if (!isClient || !cizelgeData) return false;
+        // Client-side olduğumuzdan eminsek window'u kullanabiliriz
         const currentPathname = window.location.pathname;
-        // Kök dizinde veya /1 yolunda ve arama yoksa göster
         const pageIsOneOrRoot = (currentPathname === '/' || /^\/1$/.test(currentPathname));
+        // Arama yoksa ve ana sayfadaysa (veya /1) göster
         return pageIsOneOrRoot && !searchQuery.value;
     });
 
@@ -382,7 +372,7 @@ export default function GalleryManager() {
         return <p class="error-message">{userErrorMessage}</p>;
     }
 
-    // Normal Render
+    // Normal Render (JSX İÇİNDE GÜNCELLENMİŞ KONTROLLERLE)
     return (
         <Fragment>
             <SearchBar
@@ -397,7 +387,8 @@ export default function GalleryManager() {
             {searchStatusMessage.value}
 
             {/* Ana sayfada ve arama yokken Statik Tablolar */}
-            {showStaticTables.value && cizelgeData?.tags?.length > 0 && (
+            {/* Koşul güncellendi: showStaticTables ve cizelgeData/tags kontrolü */}
+            {showStaticTables.value && cizelgeData && cizelgeData.tags && cizelgeData.tags.length > 0 && (
                 <StaticTable
                     title="#İLİŞTİRİLER"
                     data={cizelgeData.tags}
@@ -408,7 +399,6 @@ export default function GalleryManager() {
 
             <ImageGrid
                  items={displayItems.value}
-                 // Yükleme göstergesi: Genel yükleme devam ediyorsa VEYA arama yapılıyorsa
                  isLoading={isLoading.value || isSearching.value}
              />
 
@@ -422,7 +412,8 @@ export default function GalleryManager() {
             )}
 
             {/* Ana sayfada ve arama yokken Statik Tablolar */}
-            {showStaticTables.value && cizelgeData?.updated?.length > 0 && (
+            {/* Koşul güncellendi: showStaticTables ve cizelgeData/updated kontrolü */}
+            {showStaticTables.value && cizelgeData && cizelgeData.updated && cizelgeData.updated.length > 0 && (
                 <StaticTable
                     title="SON GÜNCELLENEN SUNUMLAR"
                     data={cizelgeData.updated}
