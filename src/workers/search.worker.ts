@@ -4,7 +4,7 @@ import Logger from '../utils/logger';
 
 // Global tipler src/env.d.ts içinde tanımlı
 
-let pagefindApi: PagefindApi | null = null; // Tip env.d.ts'den geliyor
+let pagefindApi: PagefindApi | null = null;
 let pagefindLoadError: Error | null = null;
 let isLoadingPagefind: boolean = false;
 
@@ -13,12 +13,13 @@ async function loadPagefind() {
     isLoadingPagefind = true;
     try {
         Logger.info('[Worker-Search] Pagefind modülü dinamik olarak import ediliyor...');
-        // Dinamik import (env.d.ts bunu tanımalı)
+        // @ts-ignore: TypeScript'in build-time kontrolünü atla, çünkü dosya runtime'da oluşacak.
         await import('/pagefind/pagefind.js');
 
         // Global tip (WorkerGlobalScope) env.d.ts içinde tanımlı
+        // self'in tipini kontrol etmeye gerek yok, global tanım yeterli olmalı
         if (typeof self.pagefind?.search === 'function') {
-            pagefindApi = self.pagefind;
+            pagefindApi = self.pagefind; // Global'den al
             Logger.info('[Worker-Search] Pagefind API başarıyla yüklendi.');
             pagefindLoadError = null;
         } else {
@@ -34,7 +35,8 @@ async function loadPagefind() {
 }
 
 async function performSearch(query: string): Promise<string[]> {
-    await loadPagefind();
+    await loadPagefind(); // Yüklemeyi dene/bekle
+    // Hata kontrolleri
     if (pagefindLoadError) { throw new Error(`Arama motoru yüklenemedi: ${pagefindLoadError.message}`); }
     if (!pagefindApi) { throw new Error("Arama motoru API bulunamadı/hazır değil."); }
     if (typeof query !== 'string' || query.trim() === '') { return []; }
@@ -44,16 +46,11 @@ async function performSearch(query: string): Promise<string[]> {
     try {
         const searchResult = await pagefindApi.search(trimmedQuery);
         if (!searchResult?.results) { return []; }
-        Logger.info(`[Worker-Search] Ham sonuç sayısı: ${searchResult.results.length}`);
         const dataPromises = searchResult.results.map(async (result) => {
              try {
                  const data = await result.data();
-                 const galleryItemId = data?.meta?.id ?? data?.id ?? null;
-                 return galleryItemId;
-             } catch (dataError) {
-                 Logger.error('[Worker-Search] Pagefind result.data() hatası:', dataError, 'Sonuç ID:', result.id);
-                 return null;
-             }
+                 return data?.meta?.id ?? data?.id ?? null; // ID'yi al
+             } catch (dataError) { return null; }
         });
         const resolvedIds = await Promise.all(dataPromises);
         const ids = resolvedIds.filter((id): id is string => typeof id === 'string' && id.trim() !== '');
@@ -66,8 +63,7 @@ async function performSearch(query: string): Promise<string[]> {
 }
 
 const api = { performSearch };
-// Doğrudan `expose` fonksiyonunu kullan
-expose(api);
+expose(api); // Expose API
 Logger.info('[Worker-Search] Arama Worker Comlink için hazır.');
 self.addEventListener('error', (event) => { Logger.error('[Worker-Search] Yakalanmayan Hata:', event.error || event.message); });
 self.addEventListener('unhandledrejection', (event) => { Logger.error('[Worker-Search] İşlenmeyen Red:', event.reason); });
