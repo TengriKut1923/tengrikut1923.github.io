@@ -1,37 +1,66 @@
 // src/workers/search.worker.ts
 import * as Comlink from 'comlink';
-import Logger from '../utils/logger'; // Göreli yol kullan
+// Logger import'u için yolu projenize göre ayarlayın (varsayılan ../utils/logger)
+// Eğer utils direkt src altındaysa: import Logger from '@/utils/logger'; daha iyi olabilir
+// Ancak worker build sürecinde bu alias'ı çözümleyemeyebilir, göreceli yol daha güvenli olabilir.
+import Logger from '../utils/logger'; // Veya doğru göreceli yol
+
+// --- Pagefind'ı Worker İçine Yükle ---
+try {
+  // pagefind.js dosyasının build sonrası public path'ini belirtin
+  // Genellikle /pagefind/pagefind.js olur (dist klasöründeki yapıya göre)
+  self.importScripts('/pagefind/pagefind.js');
+  Logger.info('[Worker-Search] Pagefind script worker içine import edildi (importScripts).');
+} catch (e) {
+  Logger.error('[Worker-Search] Pagefind script worker içine import edilemedi (importScripts):', e);
+  // Pagefind yüklenemezse worker'ın bir şey yapması engellenmeli
+  // Comlink.expose'dan önce throw new Error() yapılabilir veya api objesi boş bırakılabilir.
+  // Şimdilik sadece logluyoruz, aşağıdaki kontrol bunu yakalayacak.
+}
 
 // --- Global Pagefind Tipi Tanımı ---
+// Bu tanım hala geçerli, çünkü importScripts global `self`'e ekler.
 declare global {
-  interface Window {
+  interface Window { // `self` de Window gibi davranır worker içinde
     pagefind?: PagefindApi;
   }
 }
 
 // --- Pagefind API ve Sonuç Tipleri ---
 interface PagefindApi {
-  options?: (opts: any) => Promise<void>;
+  options?: (opts: Record<string, any>) => Promise<void>;
   search: (query: string) => Promise<{ results: PagefindResultItem[] }>;
+  // Gerekirse diğer Pagefind API metodlarını ekleyin
 }
 interface PagefindResultItem {
-  id: string; // Pagefind çıktısını kontrol edin
+  id: string; // Pagefind çıktısını kontrol edin, bu genellikle unique bir hash'dir
   data: () => Promise<PagefindResultData>;
+  // Gerekirse diğer Pagefind sonuç özelliklerini ekleyin
 }
 interface PagefindResultData {
-  meta?: { id?: string };
-  id?: string; // Veya url'den parse edilecekse farklı
+  // meta objesi genellikle indexlenen HTML'deki meta etiketlerini veya data-* özniteliklerini içerir
+  meta?: {
+      id?: string; // data-pagefind-meta="id:BENIM_IDM" gibi tanımlandıysa
+      title?: string; // <title> etiketi veya data-pagefind-meta="title:..."
+      // Diğer meta alanları...
+  };
+  // Bazen doğrudan data objesinde de ID olabilir
+  id?: string;
+  // URL genellikle doğrudan data içinde olmaz, ama pagefind ayarlarına bağlı
+  url?: string; // Örneğin data-pagefind-filter="url:/path/to/page" gibi
 }
 
 // --- Arama Fonksiyonu ---
 async function performSearch(query: string): Promise<string[]> {
-  // Global pagefind nesnesini kontrol et
+  // Global pagefind nesnesini VE search metodunu kontrol et
   if (typeof self.pagefind === 'undefined' || typeof self.pagefind.search !== 'function') {
-    Logger.warn('[Worker-Search] Global pagefind API henüz yüklenmedi veya `search` metodu yok. Arama yapılamıyor.');
-    return []; // Boş dizi dön
+    Logger.error('[Worker-Search] Global pagefind API yüklenemedi veya kullanılamıyor. Arama yapılamıyor.');
+    // Belki burada Comlink'e bir hata fırlatmak daha iyi olur?
+    // throw new Error("Arama motoru başlatılamadı.");
+    return []; // Veya hata fırlat
   }
 
-  const pagefindApi = self.pagefind; // API'yi kullan
+  const pagefindApi = self.pagefind;
 
   if (typeof query !== 'string' || query.trim() === '') {
     Logger.info('[Worker-Search] Boş veya geçersiz sorgu, arama yapılmadı.');
@@ -42,6 +71,9 @@ async function performSearch(query: string): Promise<string[]> {
   Logger.info(`[Worker-Search] Arama yapılıyor: "${trimmedQuery}"`);
 
   try {
+    // Pagefind'ın belirli seçeneklere ihtiyacı olabilir (opsiyonel)
+    // await pagefindApi.options?.({ /* ... */ });
+
     const searchResult = await pagefindApi.search(trimmedQuery);
 
     if (!searchResult || !Array.isArray(searchResult.results)) {
@@ -49,21 +81,38 @@ async function performSearch(query: string): Promise<string[]> {
       return [];
     }
 
-    // Sonuçlardan ID'leri ayıkla
-    const dataPromises = searchResult.results.map((result: PagefindResultItem) => result.data());
-    const dataResults = await Promise.all(dataPromises);
+    Logger.info(`[Worker-Search] Ham sonuç sayısı: ${searchResult.results.length}`);
 
-    // ID'nin bulunduğu yeri kontrol edin (meta.id, id, veya url?)
-    const ids = dataResults
-      .map(data => data?.meta?.id ?? data?.id ?? null)
-      .filter((id): id is string => typeof id === 'string' && id !== '');
+    // Sonuçlardan ID'leri asenkron olarak ayıkla
+    const dataPromises = searchResult.results.map(async (result: PagefindResultItem) => {
+        try {
+            const data = await result.data();
+            // Pagefind'ın döndürdüğü ID'yi veya meta içindeki ID'yi ara
+            // Pagefind genellikle kendi internal ID'sini (result.id) kullanır,
+            // ama biz galeri öğelerinin ID'sini istiyoruz, bu genellikle meta içinde olur.
+            const galleryItemId = data?.meta?.id ?? data?.id ?? null;
+            // console.log('Result Data:', data, 'Extracted ID:', galleryItemId); // Debug için
+            return galleryItemId;
+        } catch (dataError) {
+            Logger.error('[Worker-Search] Sonuç data() alınırken hata:', dataError);
+            return null; // Bu sonuç için ID alınamadı
+        }
+    });
 
-    Logger.info(`[Worker-Search] "${trimmedQuery}" için ${ids.length} sonuç bulundu.`);
+    const resolvedIds = await Promise.all(dataPromises);
+
+    // Geçerli ID'leri filtrele (null olmayan ve boş olmayan string'ler)
+    const ids = resolvedIds.filter((id): id is string => typeof id === 'string' && id.trim() !== '');
+
+    Logger.info(`[Worker-Search] "${trimmedQuery}" için filtrelenmiş ${ids.length} geçerli ID bulundu.`);
+    // console.log('Returned IDs:', ids); // Debug için
     return ids;
 
   } catch (error) {
     Logger.error(`[Worker-Search] Arama sırasında hata oluştu ("${trimmedQuery}"):`, error);
-    return [];
+    // Hata durumunda ana thread'e bilgi vermek için hata fırlatmak daha iyi olabilir
+    // throw new Error(`Arama başarısız oldu: ${error.message}`);
+    return []; // Veya hata fırlat
   }
 }
 
@@ -74,7 +123,8 @@ const api = {
 
 Comlink.expose(api);
 
-Logger.info('[Worker-Search] Arama Worker hazır (Global pagefind scriptinin yüklenmesi bekleniyor).');
+// Worker'ın hazır olduğunu logla (Pagefind'ın yüklenip yüklenmediği yukarıda kontrol ediliyor)
+Logger.info('[Worker-Search] Arama Worker Comlink için hazır.');
 
 // --- Hata Dinleyicileri ---
 self.addEventListener('error', (event) => {
