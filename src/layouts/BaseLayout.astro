@@ -1,0 +1,163 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import { SEO, type Props as SEOProps } from 'astro-seo';
+import siteMetadata from '@/config/siteMetadata'; // Site meta verilerini import et
+import '@/styles/tng.css'; // Global stiller
+import Logger from '@/utils/logger'; // Loglama modülü
+
+// Layout'a özel props (title, description vb. sayfa bazlı geçilebilir)
+export interface Props extends SEOProps {}
+
+const {
+  title = siteMetadata.title, // Varsayılan başlık
+  description = siteMetadata.description, // Varsayılan açıklama
+  // Diğer SEO prop'ları için varsayılanlar veya sayfa bazlı geçişler
+  ...restSeoProps
+} = Astro.props;
+
+// Canonical URL'yi otomatik olarak al veya manuel geç
+const canonicalUrl = restSeoProps.canonical ?? Astro.url.href;
+
+// GoatCounter (sayfa geçişlerinde de çalışması için)
+const GOATCOUNTER_URL = "https://tengrikut1923.goatcounter.com/count";
+const GOATCOUNTER_SCRIPT_URL = "//gc.zgo.at/count.js";
+
+// Loglama örneği
+Logger.info(`[BaseLayout] Sayfa yükleniyor: ${Astro.url.pathname}`);
+---
+
+<!DOCTYPE html>
+<html lang={siteMetadata.language}>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content={Astro.generator}>
+
+    {/* astro-seo Bileşeni */}
+    <SEO
+        title={title}
+        description={description}
+        canonical={canonicalUrl}
+        openGraph={{
+            basic: {
+                title: title,
+                type: 'website',
+                image: siteMetadata.ogImage, // Varsayılan OG resmi
+                url: canonicalUrl,
+            },
+            image: {
+                alt: description, // Resim açıklaması
+            },
+            // İsteğe bağlı: site_name vb.
+            optional: {
+                site_name: siteMetadata.siteName,
+                locale: siteMetadata.locale
+            }
+        }}
+        twitter={{
+            card: 'summary_large_image',
+            site: siteMetadata.twitterHandle,
+            creator: siteMetadata.twitterHandle, // Veya içerik oluşturucu farklıysa
+            title: title,
+            description: description,
+            image: siteMetadata.ogImage, // Twitter için de aynı resim kullanılabilir
+            imageAlt: description
+        }}
+        extend={{
+            // Favicon ve diğer linkler (manifest VitePWA tarafından eklenir)
+            link: [
+                { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+                // SVG ikon (tarayıcı desteği varsa öncelikli)
+                { rel: "icon", href: "/bediz/damga/2BDFFE7C.svg", type: "image/svg+xml", sizes: "any" },
+                // Farklı boyutlarda PNG ikonlar
+                { rel: "icon", href: "/bediz/damga/1D8A565C.png", type: "image/png", sizes: "96x96" },
+                { rel: "icon", href: "/bediz/damga/4BC5D1F0.png", type: "image/png", sizes: "192x192" },
+                { rel: "icon", href: "/bediz/damga/25020567.png", type: "image/png", sizes: "512x512" },
+                // Apple dokunmatik ikon
+                { rel: "apple-touch-icon", href: "/bediz/damga/2F831831.png", type: "image/png", sizes: "180x180" },
+            ],
+            // Meta etiketleri
+            meta: [
+                { name: "theme-color", content: siteMetadata.themeColor },
+                { name: "author", content: siteMetadata.author },
+                { name: "robots", content: "index, follow" }, // Veya noindex, nofollow
+                { name: "mobile-web-app-capable", content: "yes" },
+                // Gerekirse diğer meta etiketleri
+                 // --- ÖNEMLİ: CSP Başlığı ---
+                 // GitHub Pages CSP'yi HTTP başlıkları ile ayarlamaya izin vermez.
+                 // Bu meta etiketi bir geri çekilme yöntemidir ancak daha az güvenlidir.
+                 // Mümkünse sunucu tarafı başlıklar tercih edilir.
+                 // İçeriği sitenizin ihtiyaçlarına göre (script kaynakları, stil kaynakları vb.) dikkatlice ayarlayın.
+                 // { 'http-equiv': "Content-Security-Policy", content: "default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com; font-src 'self'; connect-src 'self' https://tengrikut1923.goatcounter.com; worker-src 'self';" }
+            ],
+            // Schema.org JSON-LD (sayfa bazlı özelleştirilebilir)
+            schemaOrg: [
+                {
+                    "@context": "https://schema.org",
+                    "@type": "WebSite",
+                    "url": siteMetadata.siteUrl,
+                    "name": siteMetadata.siteName,
+                    "description": siteMetadata.description,
+                    "inLanguage": siteMetadata.language,
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": siteMetadata.author, // Veya organizasyon adı
+                        "logo": {
+                            "@type": "ImageObject",
+                            "url": new URL(siteMetadata.logoUrl, siteMetadata.siteUrl).toString()
+                        }
+                    },
+                     "image": {
+                         "@type": "ImageObject",
+                         "url": siteMetadata.ogImage
+                     }
+                    // Arama Action eklenebilir (potentialAction)
+                }
+            ]
+        }}
+        {...restSeoProps} {/* Diğer tüm SEO prop'larını buraya aktar */}
+    />
+
+    {/* Akıcı sayfa geçişleri */}
+    <ViewTransitions fallback="animate" />
+
+    {/* GoatCounter Analiz Script'i */}
+    <script is:inline define:vars={{ GOATCOUNTER_URL, GOATCOUNTER_SCRIPT_URL }}>
+      // GoatCounter'ı yükle
+      const gcScript = document.createElement('script');
+      gcScript.async = true;
+      gcScript.src = GOATCOUNTER_SCRIPT_URL;
+      gcScript.dataset.goatcounter = GOATCOUNTER_URL;
+      document.head.appendChild(gcScript);
+
+      // Astro View Transitions ile sayfa geçişlerini izle
+      document.addEventListener('astro:page-load', () => {
+        if (window.goatcounter && typeof window.goatcounter.count === 'function') {
+          window.goatcounter.count({
+            path: location.pathname + location.search + location.hash,
+          });
+          console.info('[GoatCounter] Page view tracked (astro:page-load)');
+        } else {
+          // Goatcounter henüz yüklenmediyse veya fonksiyon yoksa bekle ve tekrar dene
+          const checkGoatCounter = setInterval(() => {
+            if (window.goatCounter && typeof window.goatcounter.count === 'function') {
+              clearInterval(checkGoatCounter);
+               window.goatcounter.count({
+                 path: location.pathname + location.search + location.hash,
+               });
+              console.info('[GoatCounter] Page view tracked (interval check)');
+            }
+          }, 100);
+          // Belirli bir süre sonra denemeyi bırak
+          setTimeout(() => clearInterval(checkGoatCounter), 3000);
+        }
+      });
+    </script>
+
+</head>
+<body>
+    {/* Ana sayfa içeriği buraya gelecek */}
+    <slot />
+
+</body>
+</html>

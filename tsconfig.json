@@ -1,0 +1,15 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"] // İsteğe bağlı kısayol
+    },
+    "allowJs": true, // JS dosyalarına izin ver (Comlink vb. için gerekebilir)
+    "moduleResolution": "bundler", // Modern Node.js için
+    "lib": ["dom", "dom.iterable", "esnext", "webworker"], // Worker tipi için
+    "types": ["node", "vite-plugin-pwa/client"] // PWA tipleri
+  }
+}

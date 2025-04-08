@@ -1,0 +1,16 @@
+{
+  "tags": [
+    { "href": "/ara/Etiket%20%C3%96rnek%201", "text": "Etiket Örnek 1", "label": "Etiket 1" },
+    { "href": "/ara/Etiket%20%C3%96rnek%202", "text": "Etiket Örnek 2", "label": "Etiket 2" },
+    { "href": "/ara/Etiket%20%C3%96rnek%203", "text": "Etiket Örnek 3", "label": "Etiket 3" },
+    { "href": "/ara/Etiket%20%C3%96rnek%204", "text": "Etiket Örnek 4", "label": "Etiket 4" },
+    { "href": "/ara/Etiket%20%C3%96rnek%205", "text": "Etiket Örnek 5", "label": "Etiket 5" },
+    { "href": "/ara/Etiket%20%C3%96rnek%206", "text": "Etiket Örnek 6", "label": "Etiket 6" }
+  ],
+  "updated": [
+    { "href": "/ara/G%C3%BCncel%20%C3%96rnek%201", "text": "Güncel Örnek 1", "label": "Güncel Sunum 1" },
+    { "href": "/ara/G%C3%BCncel%20%C3%96rnek%202", "text": "Güncel Örnek 2", "label": "Güncel Sunum 2" },
+    { "href": "/ara/G%C3%BCncel%20%C3%96rnek%203", "text": "Güncel Örnek 3", "label": "Güncel Sunum 3" },
+    { "href": "/ara/G%C3%BCncel%20%C3%96rnek%204", "text": "Güncel Örnek 4", "label": "Güncel Sunum 4" }
+  ]
+}
