@@ -1,9 +1,7 @@
 import { h } from 'preact';
-// useCallback kaldırıldı, useRef eklendi
 import { useState, useEffect, useRef } from 'preact/hooks';
 import debounce from 'just-debounce-it';
 
-// Debounce fonksiyonunun tipini tanımla (isteğe bağlı)
 type DebouncedFunction<T extends (...args: any[]) => any> = T & { cancel?: () => void };
 
 interface SearchBarProps {
@@ -21,39 +19,36 @@ export default function SearchBar({
     isLoading,
     placeholder = 'Ara...',
     ariaLabel = 'Arama',
-    debounceWait = 300,
+    debounceWait = 300, // debounceWait prop'u eklendi (varsayılan 300ms)
 }: SearchBarProps) {
     const [inputValue, setInputValue] = useState(initialQuery);
+    // useRef kullanarak debounce fonksiyonunu sakla
     const debouncedSearchRef = useRef<DebouncedFunction<(value: string) => void> | null>(null);
 
-    // Debounce fonksiyonunu oluştur/güncelle
+    // Debounce fonksiyonunu oluştur/güncelle (sadece onSearch veya debounceWait değişirse)
     useEffect(() => {
-        debouncedSearchRef.current = debounce((value: string) => {
+        const debouncedFn = debounce((value: string) => {
             onSearch(value);
         }, debounceWait);
+        debouncedSearchRef.current = debouncedFn;
 
         // Component unmount olduğunda debounce timer'ını temizle
         return () => {
-            if (debouncedSearchRef.current?.cancel) {
-                debouncedSearchRef.current.cancel();
-            }
+            debouncedFn.cancel?.(); // cancel varsa çağır
         };
     }, [onSearch, debounceWait]);
 
     const handleInputChange = (e: h.JSX.TargetedEvent<HTMLInputElement, Event>) => {
         const value = e.currentTarget.value;
         setInputValue(value);
-        // Düzeltme: null kontrolü
-        if (debouncedSearchRef.current) {
-            debouncedSearchRef.current(value);
-        }
+        // Debounce edilmiş fonksiyonu çağır (varsa)
+        debouncedSearchRef.current?.(value);
     };
 
     const handleSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement, Event>) => {
         e.preventDefault();
-        if (debouncedSearchRef.current?.cancel) {
-            debouncedSearchRef.current.cancel();
-        }
+        // Submit edildiğinde debounce'ı iptal et ve hemen ara
+        debouncedSearchRef.current?.cancel?.();
         onSearch(inputValue);
     };
 
@@ -72,13 +67,23 @@ export default function SearchBar({
                     value={inputValue}
                     onInput={handleInputChange}
                     aria-label={ariaLabel}
-                    aria-busy={isLoading}
-                    autoComplete="off"
+                    aria-busy={isLoading} // isLoading durumunu aria-busy ile belirt
+                    autoComplete="off" // Tarayıcı otomatik tamamlamasını kapat
+                    // Gerekirse diğer input nitelikleri: autoFocus, required vb.
                 />
+                {/* Yükleme göstergesi */}
                 {isLoading && (
                     <span class="search-loading-spinner" aria-hidden="true"></span>
+                    /* İsteğe bağlı: Ekran okuyucular için gizli metin
+                    <span class="visually-hidden">Arama yapılıyor...</span>
+                    */
                 )}
             </div>
+            {/* İsteğe bağlı: Submit butonu (Enter ile de çalışır)
+            <button type="submit" class="search-submit-button" aria-label="Ara">
+                Ara
+            </button>
+             */}
         </form>
     );
 }

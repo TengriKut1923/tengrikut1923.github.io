@@ -48,7 +48,6 @@ Logger.info(`[BaseLayout] Sayfa yükleniyor: ${Astro.url.pathname}`);
             image: {
                 alt: description, // Resim açıklaması
             },
-            // İsteğe bağlı: site_name vb.
             optional: {
                 site_name: siteMetadata.siteName,
                 locale: siteMetadata.locale
@@ -57,40 +56,28 @@ Logger.info(`[BaseLayout] Sayfa yükleniyor: ${Astro.url.pathname}`);
         twitter={{
             card: 'summary_large_image',
             site: siteMetadata.twitterHandle,
-            creator: siteMetadata.twitterHandle, // Veya içerik oluşturucu farklıysa
+            creator: siteMetadata.twitterHandle,
             title: title,
             description: description,
-            image: siteMetadata.ogImage, // Twitter için de aynı resim kullanılabilir
+            image: siteMetadata.ogImage,
             imageAlt: description
         }}
         extend={{
-            // Favicon ve diğer linkler (manifest VitePWA tarafından eklenir)
             link: [
                 { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-                // SVG ikon (tarayıcı desteği varsa öncelikli)
                 { rel: "icon", href: "/bediz/damga/2BDFFE7C.svg", type: "image/svg+xml", sizes: "any" },
-                // Farklı boyutlarda PNG ikonlar
                 { rel: "icon", href: "/bediz/damga/1D8A565C.png", type: "image/png", sizes: "96x96" },
                 { rel: "icon", href: "/bediz/damga/4BC5D1F0.png", type: "image/png", sizes: "192x192" },
                 { rel: "icon", href: "/bediz/damga/25020567.png", type: "image/png", sizes: "512x512" },
-                // Apple dokunmatik ikon
                 { rel: "apple-touch-icon", href: "/bediz/damga/2F831831.png", type: "image/png", sizes: "180x180" },
             ],
-            // Meta etiketleri
             meta: [
                 { name: "theme-color", content: siteMetadata.themeColor },
                 { name: "author", content: siteMetadata.author },
-                { name: "robots", content: "index, follow" }, // Veya noindex, nofollow
+                { name: "robots", content: "index, follow" },
                 { name: "mobile-web-app-capable", content: "yes" },
-                // Gerekirse diğer meta etiketleri
-                 // --- ÖNEMLİ: CSP Başlığı ---
-                 // GitHub Pages CSP'yi HTTP başlıkları ile ayarlamaya izin vermez.
-                 // Bu meta etiketi bir geri çekilme yöntemidir ancak daha az güvenlidir.
-                 // Mümkünse sunucu tarafı başlıklar tercih edilir.
-                 // İçeriği sitenizin ihtiyaçlarına göre (script kaynakları, stil kaynakları vb.) dikkatlice ayarlayın.
-                 // { 'http-equiv': "Content-Security-Policy", content: "default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com; font-src 'self'; connect-src 'self' https://tengrikut1923.goatcounter.com; worker-src 'self';" }
+                // { 'http-equiv': "Content-Security-Policy", content: "..." } // CSP kaldırıldı veya ayarlandıysa
             ],
-            // Schema.org JSON-LD (sayfa bazlı özelleştirilebilir)
             schemaOrg: [
                 {
                     "@context": "https://schema.org",
@@ -101,7 +88,7 @@ Logger.info(`[BaseLayout] Sayfa yükleniyor: ${Astro.url.pathname}`);
                     "inLanguage": siteMetadata.language,
                     "publisher": {
                         "@type": "Organization",
-                        "name": siteMetadata.author, // Veya organizasyon adı
+                        "name": siteMetadata.author,
                         "logo": {
                             "@type": "ImageObject",
                             "url": new URL(siteMetadata.logoUrl, siteMetadata.siteUrl).toString()
@@ -111,11 +98,10 @@ Logger.info(`[BaseLayout] Sayfa yükleniyor: ${Astro.url.pathname}`);
                          "@type": "ImageObject",
                          "url": siteMetadata.ogImage
                      }
-                    // Arama Action eklenebilir (potentialAction)
                 }
             ]
         }}
-        {...restSeoProps} {/* Diğer tüm SEO prop'larını buraya aktar */}
+        {...restSeoProps}
     />
 
     {/* Akıcı sayfa geçişleri */}
@@ -138,9 +124,8 @@ Logger.info(`[BaseLayout] Sayfa yükleniyor: ${Astro.url.pathname}`);
           });
           console.info('[GoatCounter] Page view tracked (astro:page-load)');
         } else {
-          // Goatcounter henüz yüklenmediyse veya fonksiyon yoksa bekle ve tekrar dene
           const checkGoatCounter = setInterval(() => {
-            if (window.goatCounter && typeof window.goatcounter.count === 'function') {
+            if (window.goatcounter && typeof window.goatcounter.count === 'function') { // window.goatCounter -> window.goatcounter düzeltmesi
               clearInterval(checkGoatCounter);
                window.goatcounter.count({
                  path: location.pathname + location.search + location.hash,
@@ -148,7 +133,6 @@ Logger.info(`[BaseLayout] Sayfa yükleniyor: ${Astro.url.pathname}`);
               console.info('[GoatCounter] Page view tracked (interval check)');
             }
           }, 100);
-          // Belirli bir süre sonra denemeyi bırak
           setTimeout(() => clearInterval(checkGoatCounter), 3000);
         }
       });
@@ -156,8 +140,6 @@ Logger.info(`[BaseLayout] Sayfa yükleniyor: ${Astro.url.pathname}`);
 
 </head>
 <body>
-    {/* Ana sayfa içeriği buraya gelecek */}
     <slot />
-
 </body>
 </html>
