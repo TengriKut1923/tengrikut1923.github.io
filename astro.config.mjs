@@ -61,11 +61,7 @@ export default defineConfig({
             return `assets/other/[name]-[hash][extname]`;
           },
         },
-        // --- Worker'daki Pagefind import'unu harici tut ---
-        external: [
-          '/pagefind/pagefind.js'
-        ]
-        // --- External Ekleme Sonu ---
+        // --- external ayarı kaldırıldı ---
       },
     },
     server: { https: true }
