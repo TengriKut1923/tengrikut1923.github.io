@@ -1,3 +1,4 @@
+// astro.config.mjs
 import { defineConfig } from 'astro/config';
 import preact from "@astrojs/preact";
 import { VitePWA } from 'vite-plugin-pwa';
@@ -45,7 +46,7 @@ export default defineConfig({
     resolve: {
       alias: {
         'react': 'preact/compat', 'react-dom/test-utils': 'preact/test-utils', 'react-dom': 'preact/compat', 'react/jsx-runtime': 'preact/jsx-runtime',
-        '@': '/src', // Alias tanımı
+        '@': '/src',
       },
     },
     build: {
@@ -59,7 +60,12 @@ export default defineConfig({
             if (/\.(woff|woff2|eot|ttf|otf)$/.test(assetInfo.name || '')) return `assets/fonts/[name]-[hash][extname]`;
             return `assets/other/[name]-[hash][extname]`;
           },
-        }
+        },
+        // --- Worker'daki Pagefind import'unu harici tut ---
+        external: [
+          '/pagefind/pagefind.js'
+        ]
+        // --- External Ekleme Sonu ---
       },
     },
     server: { https: true }
