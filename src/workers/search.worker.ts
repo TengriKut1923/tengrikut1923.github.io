@@ -3,14 +3,12 @@ import { expose } from 'comlink';
 import Logger from '../utils/logger';
 
 // Global tipler src/env.d.ts içinde tanımlı
-// Ancak TypeScript'in `self` üzerinde bunu görmesini sağlamak için
-// type assertion kullanacağız.
 
 let pagefindApi: PagefindApi | null = null;
 let pagefindLoadError: Error | null = null;
 let isLoadingPagefind: boolean = false;
 
-// `self` için beklediğimiz tipi tanımlayalım (env.d.ts'deki WorkerGlobalScope ile uyumlu)
+// `self` için beklediğimiz tipi tanımlayalım
 type WorkerScope = typeof self & { pagefind?: PagefindApi };
 
 async function loadPagefind() {
@@ -18,20 +16,22 @@ async function loadPagefind() {
     isLoadingPagefind = true;
     try {
         Logger.info('[Worker-Search] Pagefind modülü dinamik olarak import ediliyor...');
-        // @ts-ignore: Modül bulma hatasını önlemek için hala gerekli olabilir.
-        // Veya tsconfig include ayarının çalıştığından emin olun. Şimdilik bırakalım.
+        // @ts-ignore: Modül bulma hatasını önlemek için bırakılabilir.
         await import('/pagefind/pagefind.js');
 
-        // --- DÜZELTME: Type assertion kullanarak self.pagefind'a eriş ---
-        // TypeScript'e self'in WorkerScope tipinde olduğunu söylüyoruz.
-        if (typeof (self as WorkerScope).pagefind?.search === 'function') {
-            pagefindApi = (self as WorkerScope).pagefind; // Global'den alırken de assertion kullan
+        const potentialPagefind = (self as WorkerScope).pagefind;
+
+        // Hem pagefind'ın varlığını hem de search fonksiyonunun varlığını kontrol et
+        if (potentialPagefind && typeof potentialPagefind.search === 'function') {
+            // --- DÜZELTME: `undefined` kontrolü sonrası atama ---
+            // Bu noktada potentialPagefind'ın undefined olmadığı biliniyor.
+            pagefindApi = potentialPagefind; // Şimdi PagefindApi tipini PagefindApi | null'a atayabiliriz.
             Logger.info('[Worker-Search] Pagefind API başarıyla yüklendi.');
             pagefindLoadError = null;
+            // --- DÜZELTME SONU ---
         } else {
             throw new Error('Pagefind yüklendi ancak beklenen `self.pagefind.search` fonksiyonu bulunamadı.');
         }
-        // --- DÜZELTME SONU ---
     } catch (e) {
         Logger.error('[Worker-Search] Pagefind modülü import/başlatma hatası:', e);
         pagefindLoadError = e instanceof Error ? e : new Error(String(e));
@@ -50,7 +50,7 @@ async function performSearch(query: string): Promise<string[]> {
     const trimmedQuery = query.trim();
     Logger.info(`[Worker-Search] Pagefind ile arama yapılıyor: "${trimmedQuery}"`);
     try {
-        const searchResult = await pagefindApi.search(trimmedQuery); // pagefindApi zaten doğru tipte
+        const searchResult = await pagefindApi.search(trimmedQuery);
         if (!searchResult?.results) { return []; }
         Logger.info(`[Worker-Search] Ham sonuç sayısı: ${searchResult.results.length}`);
         const dataPromises = searchResult.results.map(async (result) => {
