@@ -1,73 +1,43 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import GalleryManager from '@/components/GalleryManager.tsx'; // Preact adasını import et
+import GalleryManager from '@/components/GalleryManager.tsx';
 import siteMetadata from '@/config/siteMetadata';
-import { Image } from 'astro:assets'; // Astro Assets
+// Kapak resmi manuel kopyalanıyorsa Image component'ine gerek yok
+// import { Image } from 'astro:assets';
+// import coverImage from '@/assets/images/cover.webp';
 
-// Kapak resmi (Astro Assets ile optimize edilebilir)
-// import coverImage from '@/assets/images/cover.webp'; // Örnek: Kapak resmi src/assets içindeyse
-
-const pageTitle = siteMetadata.title; // Ana sayfa başlığı
-const pageDescription = siteMetadata.description; // Ana sayfa açıklaması
+const pageTitle = siteMetadata.title;
+const pageDescription = siteMetadata.description;
 ---
-
 <BaseLayout title={pageTitle} description={pageDescription}>
     <main>
-        {/* Kapak Resmi - Astro Assets ile */}
-        {/* Eğer resim `static-to-copy/bediz/bet/` içindeyse direkt HTML img kullan */}
         <div class="cover-image">
             <a href="/">
-                <!-- Astro Assets Kullanımı (eğer src/assets içindeyse)
-                <Image
-                    src={coverImage}
-                    alt="TengriKut Cengiz Han | :𐱅𐰭𐰼𐰃𐰚𐰆𐱃:𐰲𐰤𐰏𐰔:𐰴𐰣"
-                    title="TengriKut Cengiz Han | :𐱅𐰭𐰼𐰃𐰚𐰆𐱃:𐰲𐰤𐰏𐰔:𐰴𐰣"
-                    loading="eager"
-                    width={1000}
-                    height={250}
-                    format="webp"
-                />
-                -->
-                 {/* Manuel Kopyalanan Resim Kullanımı */}
                  <img
                     src="/bediz/bet/1329E589.webp"
                     alt="TengriKut Cengiz Han | :𐱅𐰭𐰼𐰃𐰚𐰆𐱃:𐰲𐰤𐰏𐰔:𐰴𐰣"
                     title="TengriKut Cengiz Han | :𐱅𐰭𐰼𐰃𐰚𐰆𐱃:𐰲𐰤𐰏𐰔:𐰴𐰣"
-                    loading="eager"
-                    width="1000"
-                    height="250"
-                    decoding="async"
+                    loading="eager" width="1000" height="250" decoding="async"
                  />
             </a>
         </div>
 
-        {/* Preact Galerisi (Client-side etkileşim) */}
-        {/* client:load ada sayfa yüklenir yüklenmez hidrate olur */}
         <GalleryManager client:load />
 
-        {/* Footer (Statik - Preact adası içinde değil) */}
         <footer class="footer">
             <div class="footer-links">
-                <!-- Footer linkleri buraya eklenecek (örnek) -->
                  <a href="https://git.tengrikut1923.com/yazışmalık" class="footer-icons" title="Yazışmalık" aria-label="Yazışmalık" target="_blank" rel="noopener noreferrer">
-                    <img src="/bediz/altbilgi/1.svg" alt="Yazışmalık" width="24" height="24" loading="lazy" decoding="async"/>
-                 </a>
+                    <img src="/bediz/altbilgi/1.svg" alt="Yazışmalık" width="24" height="24" loading="lazy" decoding="async"/></a>
                  <a href="https://tengrikut1923.com/b/dad32" class="footer-icons" title="DAD32" aria-label="DAD32" target="_blank" rel="noopener noreferrer">
-                    <img src="/bediz/altbilgi/2.svg" alt="DAD32" width="24" height="24" loading="lazy" decoding="async"/>
-                </a>
+                    <img src="/bediz/altbilgi/2.svg" alt="DAD32" width="24" height="24" loading="lazy" decoding="async"/></a>
                 <a href="https://git.tengrikut1923.com/betiklik" class="footer-icons" title="Betiklik" aria-label="Betiklik" target="_blank" rel="noopener noreferrer">
-                    <img src="/bediz/altbilgi/3.svg" alt="Betiklik" width="24" height="24" loading="lazy" decoding="async"/>
-                </a>
+                    <img src="/bediz/altbilgi/3.svg" alt="Betiklik" width="24" height="24" loading="lazy" decoding="async"/></a>
                  <a href="https://tengrikut1923.com/b/sss" class="footer-icons" title="SSS" aria-label="SSS" target="_blank" rel="noopener noreferrer">
-                    <img src="/bediz/altbilgi/4.svg" alt="SSS" width="24" height="24" loading="lazy" decoding="async"/>
-                 </a>
+                    <img src="/bediz/altbilgi/4.svg" alt="SSS" width="24" height="24" loading="lazy" decoding="async"/></a>
                  <a href="https://git.tengrikut1923.com/bağış" class="footer-icons" title="Bağış" aria-label="Bağış" target="_blank" rel="noopener noreferrer">
-                    <img src="/bediz/altbilgi/5.svg" alt="Bağış" width="24" height="24" loading="lazy" decoding="async"/>
-                 </a>
+                    <img src="/bediz/altbilgi/5.svg" alt="Bağış" width="24" height="24" loading="lazy" decoding="async"/></a>
                  <a href="https://tengrikut1923.com/b/git" class="footer-icons" title="Git" aria-label="Git" target="_blank" rel="noopener noreferrer">
-                    <img src="/bediz/altbilgi/6.svg" alt="Git" width="24" height="24" loading="lazy" decoding="async"/>
-                 </a>
-                 <!-- Diğer linkler -->
+                    <img src="/bediz/altbilgi/6.svg" alt="Git" width="24" height="24" loading="lazy" decoding="async"/></a>
             </div>
             <p class="footer-text">
                 <a href="https://tengrikut1923.com/b/sss" title="Mengü Tengri'nin gücüyle... Eskiden beri neysek sonsuza dek oyuz!">

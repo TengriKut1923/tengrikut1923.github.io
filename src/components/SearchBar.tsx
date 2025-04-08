@@ -19,43 +19,30 @@ export default function SearchBar({
     isLoading,
     placeholder = 'Ara...',
     ariaLabel = 'Arama',
-    debounceWait = 300, // debounceWait prop'u eklendi (varsayılan 300ms)
+    debounceWait = 300,
 }: SearchBarProps) {
     const [inputValue, setInputValue] = useState(initialQuery);
-    // useRef kullanarak debounce fonksiyonunu sakla
     const debouncedSearchRef = useRef<DebouncedFunction<(value: string) => void> | null>(null);
 
-    // Debounce fonksiyonunu oluştur/güncelle (sadece onSearch veya debounceWait değişirse)
     useEffect(() => {
-        const debouncedFn = debounce((value: string) => {
-            onSearch(value);
-        }, debounceWait);
+        const debouncedFn = debounce((value: string) => { onSearch(value); }, debounceWait);
         debouncedSearchRef.current = debouncedFn;
-
-        // Component unmount olduğunda debounce timer'ını temizle
-        return () => {
-            debouncedFn.cancel?.(); // cancel varsa çağır
-        };
+        return () => { debouncedFn.cancel?.(); };
     }, [onSearch, debounceWait]);
 
     const handleInputChange = (e: h.JSX.TargetedEvent<HTMLInputElement, Event>) => {
         const value = e.currentTarget.value;
         setInputValue(value);
-        // Debounce edilmiş fonksiyonu çağır (varsa)
         debouncedSearchRef.current?.(value);
     };
 
     const handleSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement, Event>) => {
         e.preventDefault();
-        // Submit edildiğinde debounce'ı iptal et ve hemen ara
         debouncedSearchRef.current?.cancel?.();
         onSearch(inputValue);
     };
 
-    // initialQuery dışarıdan (URL'den vb.) değişirse input değerini güncelle
-    useEffect(() => {
-        setInputValue(initialQuery);
-    }, [initialQuery]);
+    useEffect(() => { setInputValue(initialQuery); }, [initialQuery]);
 
     return (
         <form className={`search-bar ${isLoading ? 'is-loading' : ''}`} onSubmit={handleSubmit} role="search">
@@ -67,23 +54,11 @@ export default function SearchBar({
                     value={inputValue}
                     onInput={handleInputChange}
                     aria-label={ariaLabel}
-                    aria-busy={isLoading} // isLoading durumunu aria-busy ile belirt
-                    autoComplete="off" // Tarayıcı otomatik tamamlamasını kapat
-                    // Gerekirse diğer input nitelikleri: autoFocus, required vb.
+                    aria-busy={isLoading}
+                    autoComplete="off"
                 />
-                {/* Yükleme göstergesi */}
-                {isLoading && (
-                    <span class="search-loading-spinner" aria-hidden="true"></span>
-                    /* İsteğe bağlı: Ekran okuyucular için gizli metin
-                    <span class="visually-hidden">Arama yapılıyor...</span>
-                    */
-                )}
+                {isLoading && ( <span class="search-loading-spinner" aria-hidden="true"></span> )}
             </div>
-            {/* İsteğe bağlı: Submit butonu (Enter ile de çalışır)
-            <button type="submit" class="search-submit-button" aria-label="Ara">
-                Ara
-            </button>
-             */}
         </form>
     );
 }

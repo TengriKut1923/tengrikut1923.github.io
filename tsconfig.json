@@ -7,9 +7,28 @@
     "paths": {
       "@/*": ["src/*"] // İsteğe bağlı kısayol
     },
-    "allowJs": true, // JS dosyalarına izin ver (Comlink vb. için gerekebilir)
-    "moduleResolution": "bundler", // Modern Node.js için
-    "lib": ["dom", "dom.iterable", "esnext", "webworker"], // Worker tipi için
-    "types": ["node", "vite-plugin-pwa/client"] // PWA tipleri
-  }
+    "allowJs": true, // JS dosyalarına izin ver
+    "moduleResolution": "bundler", // Modern Node.js/Vite/Astro için
+    "lib": ["dom", "dom.iterable", "esnext", "webworker"], // Worker tipi için "webworker" önemli
+    "types": ["node", "vite-plugin-pwa/client"], // PWA ve Node tipleri
+    // Aşağıdaki ayarlar "astro/tsconfigs/strict" içinde zaten olabilir ama belirtmekte fayda var
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true // Bağımlılıklardaki tip hatalarını atla (bazen gerekli)
+  },
+  // --- TypeScript'in hangi dosyaları kontrol edeceğini belirt ---
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts", // env.d.ts dosyasını dahil eder
+    "src/**/*.astro",
+    "astro.config.mjs", // Astro config dosyası
+    "scripts/**/*.js", // Build script'leri (varsa)
+    "vite.config.*" // Vite config dosyası (varsa)
+  ],
+  "exclude": [
+    "node_modules",
+    "dist", // Build çıktıları
+    "public" // Statik dosyalar (opsiyonel)
+  ]
 }

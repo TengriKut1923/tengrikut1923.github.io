@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    // Pagefind komutunda --force-language kullanılıyor
     "build": "astro build && node ./scripts/copy-static.js && node ./scripts/split-data.js && npx pagefind --site dist --force-language tr && node ./scripts/generate-sitemap.js",
     "preview": "astro preview",
     "astro": "astro",

@@ -1,54 +1,32 @@
 import { h, Fragment } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { signal, computed, effect } from "@preact/signals";
-import * as Comlink from 'comlink';
+// Comlink'ten named import'ları kullan
+import { wrap, releaseProxy, Remote } from 'comlink';
 import debounce from 'just-debounce-it';
 
 // Yardımcılar ve Bileşenler
 import Logger from '@/utils/logger';
-import SearchBar from './SearchBar'; // Bu dosyanın var olduğundan emin olun
-import ImageGrid from './ImageGrid'; // Bu dosyanın var olduğundan emin olun
-import StaticTable from './StaticTable'; // Bu dosyanın var olduğundan emin olun
-import Pagination from './Pagination';   // Bu dosyanın var olduğundan emin olun
+import SearchBar from './SearchBar';
+import ImageGrid from './ImageGrid';
+import StaticTable from './StaticTable';
+import Pagination from './Pagination';
 
-// Tipler (Projenizin gerçek veri yapısına göre güncelleyin)
-interface GalleryItem {
-    id: string;
-    h: string; // href
-    s: string; // imgSrc
-    a: string; // alt
-    t: string[]; // tags
-    p: boolean; // pinned
-}
-interface TableDataItem { // StaticTable için veri tipi
-    href: string;
-    text: string;
-    label: string;
-}
-interface CizelgeData {
-    tags: TableDataItem[];
-    updated: TableDataItem[];
-    paginationInfo: {
-        totalItems: number;
-        itemsPerPage: number;
-        totalPages: number;
-    };
-}
-interface SearchWorkerApi { // Worker'ın expose ettiği fonksiyon(lar)
-    performSearch: (query: string) => Promise<string[]>;
-}
+// Tipler
+interface GalleryItem { id: string; h: string; s: string; a: string; t: string[]; p: boolean; }
+interface TableDataItem { href: string; text: string; label: string; }
+interface CizelgeData { tags: TableDataItem[]; updated: TableDataItem[]; paginationInfo: { totalItems: number; itemsPerPage: number; totalPages: number; }; }
+interface SearchWorkerApi { performSearch: (query: string) => Promise<string[]>; }
 
-// Fetcher fonksiyonu (Doğrudan kullanılacak)
-const fetcher = async (url: string): Promise<any> => { // Dönüş tipini any veya daha spesifik yapın
+// Fetcher
+const fetcher = async (url: string): Promise<any> => {
     const res = await fetch(url);
     if (!res.ok) {
         const error = new Error(`Veri çekme hatası! Durum: ${res.status} URL: ${url}`);
         Logger.error(`[Fetcher] ${url} çekilirken hata:`, error.message);
         throw error;
     }
-    try {
-        return await res.json();
-    } catch (jsonError) {
+    try { return await res.json(); } catch (jsonError) {
         Logger.error(`[Fetcher] ${url} JSON parse hatası:`, jsonError);
         throw new Error(`Geçersiz JSON yanıtı alındı: ${url}`);
     }
@@ -60,70 +38,55 @@ const DEBOUNCE_WAIT = 300;
 export default function GalleryManager() {
     Logger.info('[GalleryManager] Ada render ediliyor...');
 
-    // --- Client-Side Kontrol State'i ---
+    // State ve Sinyaller
     const [isClient, setIsClient] = useState(false);
-
-    // --- Client-Side Veri State'leri ---
     const [cizelgeData, setCizelgeData] = useState<CizelgeData | undefined>(undefined);
     const [cizelgeError, setCizelgeError] = useState<Error | null>(null);
-    const [cizelgeLoading, setCizelgeLoading] = useState<boolean>(true); // Başlangıçta yükleniyor
-
+    const [cizelgeLoading, setCizelgeLoading] = useState<boolean>(true);
     const [pageData, setPageData] = useState<GalleryItem[] | undefined>(undefined);
     const [pageError, setPageError] = useState<Error | null>(null);
-    const [pageLoading, setPageLoading] = useState<boolean>(true); // Başlangıçta yükleniyor
-
-    // --- Sinyaller (UI State Yönetimi) ---
+    const [pageLoading, setPageLoading] = useState<boolean>(true);
     const currentPage = signal<number>(1);
     const searchQuery = signal<string>('');
     const filteredItemIds = signal<string[] | null>(null);
     const isSearching = signal<boolean>(false);
-    const searchError = signal<string | null>(null); // Arama işlemiyle ilgili hata
-    const pagefindScriptError = signal<string | null>(null); // Pagefind script yükleme hatası
-
-    // Worker State
-    const searchWorkerApi = useRef<Comlink.Remote<SearchWorkerApi> | null>(null);
-    const isWorkerReady = signal<boolean>(false); // Comlink bağlantısı hazır mı?
+    const searchError = signal<string | null>(null);
+    const pagefindScriptError = signal<string | null>(null); // Ana thread script hatası
     const workerInitError = signal<string | null>(null); // Worker başlatma hatası
 
-    // --- Efektler ---
+    // Worker State (Comlink'in Remote tipini kullan)
+    const searchWorkerApi = useRef<Remote<SearchWorkerApi> | null>(null);
+    const isWorkerReady = signal<boolean>(false);
 
-    // Client-Side Kurulum, URL Senkronizasyonu, Veri Çekme, Worker Başlatma
+    // --- Efektler ---
     useEffect(() => {
         Logger.info('[GalleryManager] Client-side mount gerçekleşti.');
-        setIsClient(true); // Client'da olduğumuzu işaretle
+        setIsClient(true);
 
-        // --- URL Sync Logic ---
         const syncStateFromURL = () => {
             if (typeof window === 'undefined') return;
             const path = window.location.pathname;
             let queryFromUrl = '';
             let pageFromUrl = 1;
             const parts = path.split('/').filter(Boolean);
-
             if (parts[0] === 'ara') {
                 queryFromUrl = decodeURIComponent(parts[1] || '').trim();
                 pageFromUrl = parseInt(parts[2] || '1', 10);
             } else if (parts.length === 1 && /^\d+$/.test(parts[0])) {
                 pageFromUrl = parseInt(parts[0], 10);
             }
-
             pageFromUrl = Math.max(1, isNaN(pageFromUrl) ? 1 : pageFromUrl);
-
             if (searchQuery.peek() !== queryFromUrl) {
-                Logger.info(`[URL Sync] Arama sorgusu değişti: ${searchQuery.peek()} -> ${queryFromUrl}`);
                 searchQuery.value = queryFromUrl;
                 if (filteredItemIds.peek() !== null) filteredItemIds.value = null;
             }
-             if (currentPage.peek() !== pageFromUrl) {
-                 Logger.info(`[URL Sync] Sayfa değişti (geçici): ${currentPage.peek()} -> ${pageFromUrl}`);
-                 currentPage.value = pageFromUrl;
+            if (currentPage.peek() !== pageFromUrl) {
+                currentPage.value = pageFromUrl;
             }
         };
-        syncStateFromURL(); // İlk yüklemede çalıştır
-        document.addEventListener('astro:page-load', syncStateFromURL); // Sayfa geçişlerinde çalıştır
+        syncStateFromURL();
+        document.addEventListener('astro:page-load', syncStateFromURL);
 
-        // --- Cizelge Verisi Çekme ---
-        setCizelgeLoading(true);
         fetcher('/json/cizelge.json')
             .then(data => {
                 const typedData = data as CizelgeData;
@@ -131,24 +94,17 @@ export default function GalleryManager() {
                 setCizelgeError(null);
                 const currentPg = currentPage.peek();
                 const totalPgs = typedData?.paginationInfo?.totalPages ?? 1;
-                if (currentPg > totalPgs) {
-                    Logger.warn(`[URL Sync] Geçersiz sayfa (${currentPg}) düzeltiliyor -> 1`);
-                    currentPage.value = 1;
-                }
+                if (currentPg > totalPgs) { currentPage.value = 1; }
             })
-            .catch(error => {
-                Logger.error("[Fetch Effect] Cizelge verisi çekilemedi:", error);
-                setCizelgeError(error);
-            })
+            .catch(error => { setCizelgeError(error); })
             .finally(() => setCizelgeLoading(false));
 
-        // --- Worker Başlatma ve Pagefind Script Yükleme ---
         let worker: Worker | null = null;
-        let remoteApi: Comlink.Remote<SearchWorkerApi> | null = null;
+        let remoteApi: Remote<SearchWorkerApi> | null = null;
         try {
             Logger.info('[GalleryManager] Arama Worker başlatılıyor...');
             worker = new Worker(new URL('../workers/search.worker.ts', import.meta.url), { type: 'module' });
-            remoteApi = Comlink.wrap<SearchWorkerApi>(worker);
+            remoteApi = wrap<SearchWorkerApi>(worker);
             searchWorkerApi.current = remoteApi;
             isWorkerReady.value = true;
             workerInitError.value = null;
@@ -159,87 +115,74 @@ export default function GalleryManager() {
                  isWorkerReady.value = false;
                  workerInitError.value = 'Arama motoru çalıştırılamadı.';
                  searchWorkerApi.current = null;
-            }
+            };
 
-            // --- PAGEFIND SCRIPT YÜKLEME ---
+            // Ana thread Pagefind script yüklemesi (opsiyonel, worker kendi import'unu yapıyor)
+            // Eğer başka bir bileşen/script ana thread'deki Pagefind'a ihtiyaç duymuyorsa,
+            // bu blok tamamen kaldırılabilir.
             if (!document.getElementById('pagefind-script')) {
-                Logger.info('[GalleryManager] Pagefind script yükleniyor...');
-                const script = document.createElement('script');
-                script.id = 'pagefind-script';
-                script.src = '/pagefind/pagefind.js'; // Build sonrası yol
-                script.type = 'module'; // Modül olarak yükle
-                script.onload = () => {
-                    Logger.info('[GalleryManager] Pagefind script başarıyla yüklendi.');
-                    pagefindScriptError.value = null; // Yükleme başarılıysa hatayı temizle
-                };
-                script.onerror = (ev) => {
-                    Logger.error('[GalleryManager] Pagefind script yüklenemedi!', ev);
-                    pagefindScriptError.value = "Arama altyapısı yüklenemedi.";
-                };
-                document.body.appendChild(script);
+                 Logger.info('[GalleryManager] Ana thread için Pagefind script yükleniyor (opsiyonel)...');
+                 const script = document.createElement('script');
+                 script.id = 'pagefind-script';
+                 script.src = '/pagefind/pagefind.js';
+                 script.type = 'module';
+                 script.onload = () => {
+                     Logger.info('[GalleryManager] Ana thread Pagefind script yüklendi.');
+                     pagefindScriptError.value = null;
+                 };
+                 script.onerror = (ev) => {
+                     Logger.error('[GalleryManager] Ana thread Pagefind script yüklenemedi!', ev);
+                     pagefindScriptError.value = "Arama altyapısı ana thread\'de yüklenemedi.";
+                 };
+                 document.body.appendChild(script);
             } else {
-                 Logger.info('[GalleryManager] Pagefind script zaten DOM\'da.');
-                 pagefindScriptError.value = null; // Mevcut script varsa bile başlangıçta hatayı temizle
+                 Logger.info('[GalleryManager] Ana thread Pagefind script zaten DOM\'da.');
+                 pagefindScriptError.value = null;
             }
-            // --- PAGEFIND SCRIPT YÜKLEME SONU ---
 
         } catch(err) {
              Logger.error('[GalleryManager] Worker başlatma/script yükleme hatası:', err);
              isWorkerReady.value = false;
-             workerInitError.value = 'Arama motoru başlatılamadı (genel hata).';
+             workerInitError.value = 'Arama motoru başlatılamadı.';
              searchWorkerApi.current = null;
              if (worker) worker.terminate();
         }
 
-        // --- Temizleme ---
-        return () => {
+        return () => { // Temizleme
             document.removeEventListener('astro:page-load', syncStateFromURL);
             Logger.info('[GalleryManager] Ada kaldırılıyor, worker sonlandırılıyor...');
             if (remoteApi) {
-                 try { remoteApi[Comlink.releaseProxy](); } catch (e) { Logger.warn('Proxy serbest bırakılırken hata:', e); }
+                 try { remoteApi[releaseProxy](); }
+                 catch (e) { Logger.warn('Proxy serbest bırakılırken hata:', e); }
             }
             if (worker) worker.terminate();
             searchWorkerApi.current = null;
             isWorkerReady.value = false;
             const existingScript = document.getElementById('pagefind-script');
-            if (existingScript) {
-                 Logger.info('[GalleryManager] Pagefind script DOM\'dan kaldırılıyor.');
-                 existingScript.remove();
-            }
+            if (existingScript) existingScript.remove(); // Ana thread script'ini kaldır
         };
-    }, []); // Sadece mount'ta çalışır
+    }, []);
 
-    // --- Sayfa Verisi Çekme Efekti ---
+    // Sayfa Verisi Çekme Efekti
     useEffect(() => {
         if (!isClient || !cizelgeData) return;
-
         const page = currentPage.value;
         const total = cizelgeData.paginationInfo.totalPages;
-
         if (page > 0 && page <= total) {
             const pageUrl = `/json/page-${page}.json`;
-            Logger.info(`[Fetch Effect] Sayfa verisi çekiliyor: ${pageUrl}`);
             setPageLoading(true);
             setPageError(null);
-
             fetcher(pageUrl)
-                .then(data => {
-                    setPageData(data as GalleryItem[]);
-                })
-                .catch(error => {
-                    Logger.error(`[Fetch Effect] Sayfa ${page} verisi çekilemedi:`, error);
-                    setPageError(error);
-                    setPageData(undefined);
-                })
+                .then(data => { setPageData(data as GalleryItem[]); })
+                .catch(error => { setPageError(error); setPageData(undefined); })
                 .finally(() => setPageLoading(false));
         } else if (total > 0) {
             setPageData(undefined);
             setPageLoading(false);
-            Logger.warn(`[Fetch Effect] Geçersiz sayfa ${page} (toplam ${total}), veri çekilmedi.`);
         }
     }, [isClient, currentPage.value, cizelgeData]);
 
-    // --- Hesaplanan Değerler ---
+    // Hesaplanan Değerler
     const paginationInfo = computed(() => cizelgeData?.paginationInfo ?? { totalItems: 0, itemsPerPage: 48, totalPages: 1 });
     const totalPages = computed(() => paginationInfo.value.totalPages);
     const isLoading = computed(() => cizelgeLoading || pageLoading);
@@ -248,178 +191,96 @@ export default function GalleryManager() {
     // Debounced Search Fonksiyonu
     const debouncedPerformSearch = useMemo(() => {
         return debounce(async (query: string) => {
-            if (pagefindScriptError.value) {
-                 Logger.warn('[Search] Pagefind script yüklenemediği için arama yapılamıyor.');
-                 searchError.value = pagefindScriptError.value;
-                 isSearching.value = false;
-                 filteredItemIds.value = [];
-                 return;
-            }
             if (!searchWorkerApi.current || !isWorkerReady.value || workerInitError.value) {
-                 Logger.warn('[Search] Worker hazır değil, arama yapılamıyor.');
                  searchError.value = workerInitError.value || 'Arama motoru hazır değil.';
                  isSearching.value = false;
                  filteredItemIds.value = [];
                  return;
             }
-
             if (query === '') {
-                Logger.info('[Search] Sorgu boş, filtreler temizleniyor.');
                 filteredItemIds.value = null;
                 isSearching.value = false;
                 searchError.value = null;
                 return;
             }
-
-            Logger.info(`[Search] Debounced arama başlıyor: "${query}"`);
             isSearching.value = true;
             searchError.value = null;
             try {
                 const ids = await searchWorkerApi.current.performSearch(query);
-                if (ids.length === 0 && query !== '') {
-                     Logger.warn(`[Search] "${query}" için sonuç bulunamadı veya Pagefind henüz hazır değil.`);
-                } else {
-                    Logger.info(`[Search] "${query}" için ${ids.length} ID bulundu.`);
-                }
                 filteredItemIds.value = ids;
+                if (ids.length === 0) Logger.warn(`[Search] "${query}" için sonuç bulunamadı.`);
+                else Logger.info(`[Search] "${query}" için ${ids.length} ID bulundu.`);
             } catch (err) {
-                Logger.error(`[Search] Worker araması başarısız oldu ("${query}"):`, err);
-                searchError.value = 'Arama sırasında bir hata oluştu.';
+                Logger.error(`[Search] Worker araması başarısız ("${query}"):`, err);
+                searchError.value = err instanceof Error ? err.message : 'Arama sırasında bilinmeyen hata.';
                 filteredItemIds.value = [];
             } finally {
                 isSearching.value = false;
             }
         }, DEBOUNCE_WAIT);
-    }, [isWorkerReady.value, workerInitError.value, pagefindScriptError.value]);
+    }, [isWorkerReady.value, workerInitError.value]); // Bağımlılıklar güncel
 
-    // Arama Sorgusu Değiştiğinde Arama Tetiklemesi
-    effect(() => {
-        const currentQuery = searchQuery.value;
-        Logger.info(`[Effect] Arama sorgusu değişti: "${currentQuery}", debounced arama tetikleniyor...`);
-        debouncedPerformSearch(currentQuery);
-    });
+    // Arama Sorgusu Değiştiğinde Tetikleme
+    effect(() => { debouncedPerformSearch(searchQuery.value); });
 
-    // --- Navigasyon ve URL Yönetimi ---
+    // Navigasyon ve URL
     const navigateTo = (path: string) => {
-        if (typeof window === 'undefined') return;
-        const currentFullPath = window.location.pathname + window.location.search + window.location.hash;
-        if (currentFullPath !== path) {
-            Logger.info(`[Navigate] Yönlendiriliyor: ${path}`);
-            window.history.pushState({}, '', path);
-        } else {
-            Logger.info(`[Navigate] Zaten hedef yolda: ${path}`);
+        if (typeof window !== 'undefined') {
+            const currentFullPath = window.location.pathname + window.location.search + window.location.hash;
+            if (currentFullPath !== path) window.history.pushState({}, '', path);
         }
     };
-
     const buildPath = (page: number, query: string): string => {
         const cleanQuery = (query || '').trim();
-        if (!cleanQuery) {
-            return page > 1 ? `/${page}` : '/';
-        } else {
-            const safeQuery = encodeURIComponent(cleanQuery);
-            return `/ara/${safeQuery}${page > 1 ? `/${page}` : ''}`;
-        }
+        if (!cleanQuery) return page > 1 ? `/${page}` : '/';
+        const safeQuery = encodeURIComponent(cleanQuery);
+        return `/ara/${safeQuery}${page > 1 ? `/${page}` : ''}`;
     };
+    const handleSearch = (query: string) => { navigateTo(buildPath(1, query)); };
 
-    const handleSearch = (query: string) => {
-        const newPath = buildPath(1, query);
-        navigateTo(newPath);
-    };
-
-    // --- Render Edilecek Öğeler ---
+    // Render Edilecek Öğeler
     const displayItems = computed((): GalleryItem[] => {
         if (!pageData) return [];
-        const currentSearchIds = filteredItemIds.value;
-        if (currentSearchIds === null) {
-            return pageData;
-        } else {
-            const idSet = new Set(currentSearchIds);
-            return pageData.filter((item: GalleryItem) => idSet.has(item.id));
-        }
+        const ids = filteredItemIds.value;
+        if (ids === null) return pageData;
+        const idSet = new Set(ids);
+        return pageData.filter(item => idSet.has(item.id));
     });
-
     const searchStatusMessage = computed(() => {
-        if (searchQuery.value && filteredItemIds.value !== null && filteredItemIds.value.length === 0 && !isSearching.value) {
+        if (searchQuery.value && filteredItemIds.value?.length === 0 && !isSearching.value) {
             return <p class="search-no-results">"{searchQuery.value}" için sonuç bulunamadı.</p>;
-        }
-        return null;
+        } return null;
     });
-
     const showStaticTables = computed(() => {
         if (!isClient || !cizelgeData) return false;
-        // Client-side olduğumuzdan eminsek window'u kullanabiliriz
-        const currentPathname = window.location.pathname;
-        const pageIsOneOrRoot = (currentPathname === '/' || /^\/1$/.test(currentPathname));
-        // Arama yoksa ve ana sayfadaysa (veya /1) göster
-        return pageIsOneOrRoot && !searchQuery.value;
+        const path = window.location.pathname;
+        return (path === '/' || /^\/1$/.test(path)) && !searchQuery.value;
     });
 
     // --- Render ---
-
-    if (!isClient) {
-        Logger.info('[GalleryManager] Client-side mount bekleniyor, placeholder render ediliyor.');
-        return <div data-hydration-placeholder="true" style="min-height: 400px;" aria-busy="true">Yükleniyor...</div>;
-    }
-
+    if (!isClient) { return <div data-hydration-placeholder="true" style="min-height: 400px;" aria-busy="true">Yükleniyor...</div>; }
     if (combinedError.value) {
-        Logger.error(`[Render] Hata oluştu: ${combinedError.value}`);
-        let userErrorMessage = 'Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyin.';
-        if (pagefindScriptError.value) userErrorMessage = pagefindScriptError.value;
-        else if (workerInitError.value) userErrorMessage = workerInitError.value;
-        else if (cizelgeError?.message || pageError?.message) userErrorMessage = 'Veriler yüklenirken bir sorun oluştu.';
-        else if (searchError.value) userErrorMessage = searchError.value;
-
-        return <p class="error-message">{userErrorMessage}</p>;
+        let msg = combinedError.value || 'Beklenmedik bir hata oluştu.';
+        // Daha spesifik hata mesajları
+        if (pagefindScriptError.value) msg = pagefindScriptError.value;
+        else if (workerInitError.value) msg = workerInitError.value;
+        else if (searchError.value) msg = searchError.value;
+        else if (cizelgeError || pageError) msg = 'Veriler yüklenirken sorun oluştu.';
+        return <p class="error-message">{msg}</p>;
     }
-
-    // Normal Render (JSX İÇİNDE GÜNCELLENMİŞ KONTROLLERLE)
     return (
         <Fragment>
-            <SearchBar
-                initialQuery={searchQuery.value}
-                onSearch={handleSearch}
-                isLoading={isSearching.value}
-                ariaLabel="İçerik ara"
-                placeholder="Ara..."
-            />
-
-            {/* Arama durumu mesajı (sonuç yoksa) */}
+            <SearchBar initialQuery={searchQuery.value} onSearch={handleSearch} isLoading={isSearching.value} />
             {searchStatusMessage.value}
-
-            {/* Ana sayfada ve arama yokken Statik Tablolar */}
-            {/* Koşul güncellendi: showStaticTables ve cizelgeData/tags kontrolü */}
-            {showStaticTables.value && cizelgeData && cizelgeData.tags && cizelgeData.tags.length > 0 && (
-                <StaticTable
-                    title="#İLİŞTİRİLER"
-                    data={cizelgeData.tags}
-                    columns={3}
-                    tableClass="tags-container"
-                />
+            {showStaticTables.value && cizelgeData?.tags?.length > 0 && (
+                <StaticTable title="#İLİŞTİRİLER" data={cizelgeData.tags} columns={3} tableClass="tags-container" />
             )}
-
-            <ImageGrid
-                 items={displayItems.value}
-                 isLoading={isLoading.value || isSearching.value}
-             />
-
-            {/* Arama yokken ve birden fazla sayfa varsa sayfalandırma */}
+            <ImageGrid items={displayItems.value} isLoading={isLoading.value || isSearching.value} />
             {totalPages.value > 1 && !searchQuery.value && (
-                 <Pagination
-                    currentPage={currentPage.value}
-                    totalPages={totalPages.value}
-                    buildPath={(page) => buildPath(page, searchQuery.value)}
-                />
+                <Pagination currentPage={currentPage.value} totalPages={totalPages.value} buildPath={(page) => buildPath(page, searchQuery.value)} />
             )}
-
-            {/* Ana sayfada ve arama yokken Statik Tablolar */}
-            {/* Koşul güncellendi: showStaticTables ve cizelgeData/updated kontrolü */}
-            {showStaticTables.value && cizelgeData && cizelgeData.updated && cizelgeData.updated.length > 0 && (
-                <StaticTable
-                    title="SON GÜNCELLENEN SUNUMLAR"
-                    data={cizelgeData.updated}
-                    columns={2}
-                    tableClass="updated-table-container"
-                />
+            {showStaticTables.value && cizelgeData?.updated?.length > 0 && (
+                <StaticTable title="SON GÜNCELLENEN SUNUMLAR" data={cizelgeData.updated} columns={2} tableClass="updated-table-container" />
             )}
         </Fragment>
     );

@@ -1,66 +1,41 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
 import { SEO, type Props as SEOProps } from 'astro-seo';
-import siteMetadata from '@/config/siteMetadata'; // Site meta verilerini import et
-import '@/styles/tng.css'; // Global stiller
-import Logger from '@/utils/logger'; // Loglama modülü
+import siteMetadata from '@/config/siteMetadata';
+import '@/styles/tng.css';
+import Logger from '@/utils/logger';
 
-// Layout'a özel props (title, description vb. sayfa bazlı geçilebilir)
 export interface Props extends SEOProps {}
 
 const {
-  title = siteMetadata.title, // Varsayılan başlık
-  description = siteMetadata.description, // Varsayılan açıklama
-  // Diğer SEO prop'ları için varsayılanlar veya sayfa bazlı geçişler
+  title = siteMetadata.title,
+  description = siteMetadata.description,
   ...restSeoProps
 } = Astro.props;
 
-// Canonical URL'yi otomatik olarak al veya manuel geç
 const canonicalUrl = restSeoProps.canonical ?? Astro.url.href;
-
-// GoatCounter (sayfa geçişlerinde de çalışması için)
 const GOATCOUNTER_URL = "https://tengrikut1923.goatcounter.com/count";
 const GOATCOUNTER_SCRIPT_URL = "//gc.zgo.at/count.js";
-
-// Loglama örneği
 Logger.info(`[BaseLayout] Sayfa yükleniyor: ${Astro.url.pathname}`);
 ---
-
 <!DOCTYPE html>
 <html lang={siteMetadata.language}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content={Astro.generator}>
-
-    {/* astro-seo Bileşeni */}
     <SEO
         title={title}
         description={description}
         canonical={canonicalUrl}
         openGraph={{
-            basic: {
-                title: title,
-                type: 'website',
-                image: siteMetadata.ogImage, // Varsayılan OG resmi
-                url: canonicalUrl,
-            },
-            image: {
-                alt: description, // Resim açıklaması
-            },
-            optional: {
-                site_name: siteMetadata.siteName,
-                locale: siteMetadata.locale
-            }
+            basic: { title: title, type: 'website', image: siteMetadata.ogImage, url: canonicalUrl },
+            image: { alt: description },
+            optional: { site_name: siteMetadata.siteName, locale: siteMetadata.locale }
         }}
         twitter={{
-            card: 'summary_large_image',
-            site: siteMetadata.twitterHandle,
-            creator: siteMetadata.twitterHandle,
-            title: title,
-            description: description,
-            image: siteMetadata.ogImage,
-            imageAlt: description
+            card: 'summary_large_image', site: siteMetadata.twitterHandle, creator: siteMetadata.twitterHandle,
+            title: title, description: description, image: siteMetadata.ogImage, imageAlt: description
         }}
         extend={{
             link: [
@@ -76,68 +51,40 @@ Logger.info(`[BaseLayout] Sayfa yükleniyor: ${Astro.url.pathname}`);
                 { name: "author", content: siteMetadata.author },
                 { name: "robots", content: "index, follow" },
                 { name: "mobile-web-app-capable", content: "yes" },
-                // { 'http-equiv': "Content-Security-Policy", content: "..." } // CSP kaldırıldı veya ayarlandıysa
             ],
-            schemaOrg: [
-                {
-                    "@context": "https://schema.org",
-                    "@type": "WebSite",
-                    "url": siteMetadata.siteUrl,
-                    "name": siteMetadata.siteName,
-                    "description": siteMetadata.description,
-                    "inLanguage": siteMetadata.language,
-                    "publisher": {
-                        "@type": "Organization",
-                        "name": siteMetadata.author,
-                        "logo": {
-                            "@type": "ImageObject",
-                            "url": new URL(siteMetadata.logoUrl, siteMetadata.siteUrl).toString()
-                        }
-                    },
-                     "image": {
-                         "@type": "ImageObject",
-                         "url": siteMetadata.ogImage
-                     }
-                }
-            ]
+            schemaOrg: [{
+                "@context": "https://schema.org", "@type": "WebSite", url: siteMetadata.siteUrl, name: siteMetadata.siteName,
+                description: siteMetadata.description, inLanguage: siteMetadata.language,
+                publisher: { "@type": "Organization", name: siteMetadata.author, logo: { "@type": "ImageObject", url: new URL(siteMetadata.logoUrl, siteMetadata.siteUrl).toString() } },
+                image: { "@type": "ImageObject", url: siteMetadata.ogImage }
+            }]
         }}
         {...restSeoProps}
     />
-
-    {/* Akıcı sayfa geçişleri */}
     <ViewTransitions fallback="animate" />
-
-    {/* GoatCounter Analiz Script'i */}
     <script is:inline define:vars={{ GOATCOUNTER_URL, GOATCOUNTER_SCRIPT_URL }}>
-      // GoatCounter'ı yükle
       const gcScript = document.createElement('script');
       gcScript.async = true;
       gcScript.src = GOATCOUNTER_SCRIPT_URL;
       gcScript.dataset.goatcounter = GOATCOUNTER_URL;
       document.head.appendChild(gcScript);
-
-      // Astro View Transitions ile sayfa geçişlerini izle
       document.addEventListener('astro:page-load', () => {
+        // Küçük harf 'goatcounter' kullanılıyor (env.d.ts'deki tipe uygun)
         if (window.goatcounter && typeof window.goatcounter.count === 'function') {
-          window.goatcounter.count({
-            path: location.pathname + location.search + location.hash,
-          });
+          window.goatcounter.count({ path: location.pathname + location.search + location.hash });
           console.info('[GoatCounter] Page view tracked (astro:page-load)');
         } else {
-          const checkGoatCounter = setInterval(() => {
-            if (window.goatcounter && typeof window.goatcounter.count === 'function') { // window.goatCounter -> window.goatcounter düzeltmesi
-              clearInterval(checkGoatCounter);
-               window.goatcounter.count({
-                 path: location.pathname + location.search + location.hash,
-               });
+          const checkInterval = setInterval(() => {
+            if (window.goatcounter && typeof window.goatcounter.count === 'function') {
+              clearInterval(checkInterval);
+               window.goatcounter.count({ path: location.pathname + location.search + location.hash });
               console.info('[GoatCounter] Page view tracked (interval check)');
             }
           }, 100);
-          setTimeout(() => clearInterval(checkGoatCounter), 3000);
+          setTimeout(() => clearInterval(checkInterval), 3000);
         }
       });
     </script>
-
 </head>
 <body>
     <slot />
