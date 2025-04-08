@@ -2,8 +2,6 @@ import { h, Fragment } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { signal, computed, effect } from "@preact/signals";
 import debounce from 'just-debounce-it';
-// Astro'nun navigate fonksiyonunu import et
-import { navigate } from 'astro:transitions';
 
 import Logger from '@/utils/logger';
 import SearchBar from './SearchBar';
