@@ -140,9 +140,7 @@ function resolveTargets(queries, env) {
   });
   return getLowestVersions(resolved);
 }
-
-      const _LRU = _lruCache.LRUCache || _lruCache.default || _lruCache;
-      const targetsCache = new _LRU({
+const targetsCache = new _lruCache({
   max: 64
 });
 function resolveTargetsCached(queries, env) {

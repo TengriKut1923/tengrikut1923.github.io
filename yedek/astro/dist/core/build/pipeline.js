@@ -94,7 +94,10 @@ class BuildPipeline extends Pipeline {
     }
     const renderersEntryUrl = new URL(`renderers.mjs?time=${Date.now()}`, baseDirectory);
     const renderers = await import(renderersEntryUrl.toString());
-    const middleware = internals.middlewareEntryPoint ? async function() { try { const mod = await import(internals.middlewareEntryPoint.toString()); return { onRequest: mod?.onRequest }; } catch (e) { return { onRequest: undefined }; } } : manifest.middleware;
+    const middleware = internals.middlewareEntryPoint ? async function() {
+      const mod = await import(internals.middlewareEntryPoint.toString());
+      return { onRequest: mod.onRequest };
+    } : manifest.middleware;
     if (!renderers) {
       throw new Error(
         "Astro couldn't find the emitted renderers. This is an internal error, please file an issue."
@@ -250,7 +253,7 @@ class BuildPipeline extends Pipeline {
   }
 }
 function createEntryURL(filePath, outFolder) {
-  return new URL("./" + filePath.replace(/\\/g, '/') + `?time=${Date.now()}`, outFolder);
+  return new URL("./" + filePath + `?time=${Date.now()}`, outFolder);
 }
 function getEntryFilePath(internals, pageData) {
   const id = "\0" + getVirtualModulePageName(ASTRO_PAGE_MODULE_ID, pageData.component);

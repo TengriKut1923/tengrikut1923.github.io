@@ -20,9 +20,9 @@ module.exports = (additionalOptions = {}) => {
 		meta: false,
 		useDefaults: true,
 		validateSchema: false,
-		
+		missingRefs: "ignore",
 		verbose: true,
-		
+		schemaId: "auto",
 		...additionalOptions,
 	});
 

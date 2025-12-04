@@ -1615,7 +1615,7 @@ var ajvOrig = (additionalOptions = {}) => {
 
     ajv.addMetaSchema(metaSchema);
     // eslint-disable-next-line no-underscore-dangle -- part of the API
-    if (ajv._opts) { ajv._opts.defaultMeta = metaSchema.id; }
+    ajv._opts.defaultMeta = metaSchema.id;
 
     return ajv;
 };

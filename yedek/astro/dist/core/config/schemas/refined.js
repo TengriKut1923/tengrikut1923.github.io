@@ -7,7 +7,7 @@ const AstroConfigRefinedSchema = z.custom().superRefine((config, ctx) => {
       path: ["build", "assetsPrefix"]
     });
   }
-  if (config.image && config.image.remotePatterns) for (let i = 0; i < config.image.remotePatterns.length; i++) {
+  for (let i = 0; i < config.image.remotePatterns.length; i++) {
     const { hostname, pathname } = config.image.remotePatterns[i];
     if (hostname && hostname.includes("*") && !(hostname.startsWith("*.") || hostname.startsWith("**."))) {
       ctx.addIssue({
@@ -128,7 +128,7 @@ const AstroConfigRefinedSchema = z.custom().superRefine((config, ctx) => {
       }
     }
   }
-  if (config.experimental && config.experimental.fonts && config.experimental.fonts.length > 0) {
+  if (config.experimental.fonts && config.experimental.fonts.length > 0) {
     for (let i = 0; i < config.experimental.fonts.length; i++) {
       const { cssVariable } = config.experimental.fonts[i];
       if (!cssVariable.startsWith("--") || cssVariable.includes(" ") || cssVariable.includes(":")) {

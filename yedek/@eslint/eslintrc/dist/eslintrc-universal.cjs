@@ -370,10 +370,6 @@ const metaSchema = {
 //------------------------------------------------------------------------------
 
 var ajvOrig = (additionalOptions = {}) => {
-        if (additionalOptions) {
-          delete additionalOptions.strictDefaults;
-          delete additionalOptions.strictKeywords;
-        }
     const ajv = new Ajv__default["default"]({
         meta: false,
         useDefaults: true,

@@ -4,18 +4,9 @@
  */
 "use strict";
 
-const chalk = require("kleur"),
+const chalk = require("chalk"),
 	util = require("node:util"),
 	table = require("../../shared/text-table");
-// [ASTRO PATCH] Kleur Compatibility Shim
-try {
-  ['red', 'yellow'].forEach(c => {
-    if (chalk[c] && !chalk[c].bold) {
-      chalk[c].bold = (str) => chalk.bold(chalk[c](str));
-    }
-  });
-} catch(e) {}
-
 
 //------------------------------------------------------------------------------
 // Helpers

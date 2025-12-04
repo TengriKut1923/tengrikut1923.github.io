@@ -411,12 +411,8 @@ async function generatePath(pathname, pipeline, gopts, route, integrationRoute, 
     body = Buffer.from(await response.arrayBuffer());
   }
   const encodedPath = encodeURI(pathname);
-  const outFolder = getOutFolder(pipeline.settings, encodedPath, route) || new URL('file://' + process.cwd() + '/dist/');
-  let outFile = getOutFile(config, outFolder, encodedPath, route);
-      if (!outFile && outFolder) {
-        // Fallback: outFolder + index.html
-        outFile = new URL('index.html', outFolder);
-      }
+  const outFolder = getOutFolder(pipeline.settings, encodedPath, route);
+  const outFile = getOutFile(config, outFolder, encodedPath, route);
   if (route.distURL) {
     route.distURL.push(outFile);
   } else {

@@ -118,11 +118,13 @@ function handleFormDataGet(key, formData, validator, baseValidator) {
   return validator instanceof z.ZodNumber ? Number(value) : value;
 }
 function unwrapBaseObjectSchema(schema, unparsedInput) {
-  while (true) {
-    if (typeof z['ZodPipe'] !== 'undefined' && schema instanceof z['ZodPipe']) { schema = schema.in; continue; }
-    if (typeof z['ZodPipeline'] !== 'undefined' && schema instanceof z['ZodPipeline']) { schema = schema._def.in; continue; }
-    if (typeof z['ZodEffects'] !== 'undefined' && schema instanceof z['ZodEffects']) { schema = schema._def.schema; continue; }
-    break;
+  while (schema instanceof z.ZodEffects || schema instanceof z.ZodPipeline) {
+    if (schema instanceof z.ZodEffects) {
+      schema = schema._def.schema;
+    }
+    if (schema instanceof z.ZodPipeline) {
+      schema = schema._def.in;
+    }
   }
   if (schema instanceof z.ZodDiscriminatedUnion) {
     const typeKey = schema._def.discriminator;

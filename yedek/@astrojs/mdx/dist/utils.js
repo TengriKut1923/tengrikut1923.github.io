@@ -60,7 +60,7 @@ function jsToTreeNode(jsString, acornOpts = {
     }
   };
 }
-function ignoreStringPlugins(plugins, logger) { if (!plugins) return [];
+function ignoreStringPlugins(plugins, logger) {
   let validPlugins = [];
   let hasInvalidPlugin = false;
   for (const plugin of plugins) {

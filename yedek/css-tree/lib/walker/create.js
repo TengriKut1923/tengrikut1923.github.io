@@ -66,7 +66,6 @@ function getTypesFromConfig(config) {
             const nodeType = config.node[name];
 
             if (!nodeType.structure) {
-                if (name === 'String' || name === 'Url') continue;
                 throw new Error('Missed `structure` field in `' + name + '` node type definition');
             }
 

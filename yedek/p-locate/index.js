@@ -1,6 +1,5 @@
 'use strict';
-const _pLimit = require('p-limit');
-const pLimit = _pLimit.default || _pLimit;
+const pLimit = require('p-limit');
 
 class EndError extends Error {
 	constructor(value) {

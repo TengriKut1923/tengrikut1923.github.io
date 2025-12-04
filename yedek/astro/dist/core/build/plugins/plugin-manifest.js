@@ -130,7 +130,7 @@ async function createManifest(buildOpts, internals) {
   }
   const clientStatics = new Set(
     await glob("**/*", {
-      cwd: buildOpts.settings.config.build?.client ? fileURLToPath(buildOpts.settings.config.build.client) : process.cwd()
+      cwd: fileURLToPath(buildOpts.settings.config.build.client)
     })
   );
   for (const file of clientStatics) {
@@ -186,7 +186,7 @@ async function buildManifest(opts, internals, staticFiles, encodedKey) {
     if (!route.pathname) continue;
     const outFolder = getOutFolder(opts.settings, route.pathname, route);
     const outFile = getOutFile(opts.settings.config, outFolder, route.pathname, route);
-    const file = outFile?.toString()?.replace((opts.settings.config.build?.client?.toString?.() ?? ''), "") ?? '';
+    const file = outFile.toString().replace(opts.settings.config.build.client.toString(), "");
     routes.push({
       file,
       links: [],
@@ -276,10 +276,10 @@ async function buildManifest(opts, internals, staticFiles, encodedKey) {
   }
   return {
     hrefRoot: opts.settings.config.root.toString(),
-    cacheDir: (opts.settings.config.cacheDir?.toString?.() ?? ''),
-    outDir: (opts.settings.config.outDir?.toString?.() ?? ''),
-    srcDir: (opts.settings.config.srcDir?.toString?.() ?? ''),
-    publicDir: (opts.settings.config.publicDir?.toString?.() ?? ''),
+    cacheDir: opts.settings.config.cacheDir.toString(),
+    outDir: opts.settings.config.outDir.toString(),
+    srcDir: opts.settings.config.srcDir.toString(),
+    publicDir: opts.settings.config.publicDir.toString(),
     buildClientDir: opts.settings.config.build.client.toString(),
     buildServerDir: opts.settings.config.build.server.toString(),
     adapterName: opts.settings.adapter?.name ?? "",

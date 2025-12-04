@@ -45,7 +45,7 @@ class Pipeline {
       return this.resolvedMiddleware;
     } else if (this.middleware) {
       const middlewareInstance = await this.middleware();
-      const onRequest = middlewareInstance?.onRequest ?? NOOP_MIDDLEWARE_FN;
+      const onRequest = middlewareInstance.onRequest ?? NOOP_MIDDLEWARE_FN;
       const internalMiddlewares = [onRequest];
       if (this.manifest.checkOrigin) {
         internalMiddlewares.unshift(createOriginCheckMiddleware());

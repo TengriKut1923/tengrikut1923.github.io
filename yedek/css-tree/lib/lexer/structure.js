@@ -159,7 +159,6 @@ export function getStructureFromConfig(config) {
                 if (nodeType.structure) {
                     structure[name] = processStructure(name, nodeType);
                 } else {
-                    if (name === 'String' || name === 'Url') continue;
                     throw new Error('Missed `structure` field in `' + name + '` node type definition');
                 }
             }

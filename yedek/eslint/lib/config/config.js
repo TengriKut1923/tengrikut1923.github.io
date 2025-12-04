@@ -13,7 +13,7 @@ const { deepMergeArrays } = require("../shared/deep-merge-arrays");
 const { flatConfigSchema, hasMethod } = require("./flat-config-schema");
 const { ObjectSchema } = require("@eslint/config-array");
 const ajvImport = require("../shared/ajv");
-const ajv = ajvImport({ strict: false });
+const ajv = ajvImport();
 const ruleReplacements = require("../../conf/replacements.json");
 
 //-----------------------------------------------------------------------------

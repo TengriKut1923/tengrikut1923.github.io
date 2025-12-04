@@ -87,7 +87,7 @@ const collectionConfigParser = z.union([
   })
 ]);
 const contentConfigParser = z.object({
-  collections: ((k,v)=>z.any().optional())(collectionConfigParser)
+  collections: z.record(collectionConfigParser)
 });
 function parseEntrySlug({
   id,

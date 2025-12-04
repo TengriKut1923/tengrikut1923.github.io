@@ -107,4 +107,4 @@ cssesc.options = {
 
 cssesc.version = '3.0.0';
 
-if (typeof module !== "undefined") { module.exports = cssesc; }
+module.exports = cssesc;
